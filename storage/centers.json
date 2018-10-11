@@ -1,0 +1,314 @@
+{
+  "introduction":{
+    "header": "Spørreundersøkelse for behandlingssenter",
+    "description": "Beskrivelse av undersøkelsen"
+  },
+  "questions": {
+    "Om dere": [
+      {
+        "label": "Navn på institusjon/rehabiliteringsavdeling",
+        "value": "navn",
+        "type": "text"
+      },
+      {
+        "label": "Nettadresse",
+        "value": "nettadresse",
+        "type": "text"
+      },
+      {
+        "label": "Telefonnummer",
+        "value": "telefonnummer",
+        "type": "text"
+      },
+      {
+        "label": "Kontaktinformasjon til den som fyller ut skjemaet (email)",
+        "value": "kontaktinformasjon",
+        "type": "text",
+        "extra": "Denne adressen brukes hvis det er noen spørsmål til deres besvarelse"
+      }
+    ],
+    "Regioner": [
+      {
+        "label": "Helse Nord",
+        "value": "helseNord",
+        "type": "checkbox"
+
+      },
+      {
+        "label": "Helse Midt-Norge",
+        "value": "helseMidtNorge",
+        "type": "checkbox"
+      },
+      {
+        "label": "Helse Vest",
+        "value": "helseVest",
+        "type": "checkbox"
+      },
+      {
+        "label": "Helse Sør-Øst",
+        "value": "helseSør-Øst",
+        "type": "checkbox"
+      }
+    ],
+    "Generelt om tilbud og innhold": [
+      {
+        "label": "Individuell rehabilitering?",
+        "value": "individuell_rehabilitering",
+        "type": "radio"
+      },
+      {
+        "label": "Rehabilitering i grupper?",
+        "value": "reabilitering_grupper",
+        "type": "radio"
+      },
+      {
+        "label": "Må pasienten være selvhjulpen i daglige aktiviteter?",
+        "value": "selfhjulpen",
+        "type": "radio"
+      },
+      {
+        "label": "Tilrettelagt for bevegelseshemmede",
+        "value": "tilrettelagt_bevegelseshemmede",
+        "type": "radio"
+      },
+      {
+        "label": "Har dere noen øvre aldersgrense?",
+        "value": "ovre_aldersgrense",
+        "type": "radio"
+      },
+      {
+        "label": "Hvis ja, hva er øvre aldersgrense",
+        "value": "ovre_aldersgrense_alder",
+        "type": "text"
+      },
+      {
+        "label": "Har dere noen nedre aldersgrense?",
+        "value": "nedre_aldersgrense",
+        "type": "radio"
+      },
+      {
+        "label": "Hvis ja, hva er nedre aldersgrense",
+        "value": "nedre_aldersgrense_alder",
+        "type": "text"
+      }
+    ],
+    "Type opphold": [
+      {
+        "label": "Inntak gruppevis for personer med MS?",
+        "value": "gruppevis",
+        "type": "radio"
+      },
+      {
+        "label": "Informasjonsopphold",
+        "value": "informasjon",
+        "type": "radio"
+      },
+      {
+        "label": "Vurderingsopphold",
+        "value": "vurdering",
+        "type": "radio"
+      },
+      {
+        "label": "Rehabilitering etter raskt funksjonstap",
+        "value": "rehabiliteringRaskt",
+        "type": "radio"
+      },
+      {
+        "label": "Rehabilitering etter gradvis funksjonstap",
+        "value": "rehabiliteringGradvis",
+        "type": "radio"
+      },
+      {
+        "label": "Tilbud til voksne pårørende i tilknytning til rehabiliteringsoppholdet",
+        "value": "voksnePårørende",
+        "type": "radio"
+      },
+      {
+        "label": "Tilbud til barn pårørende i tilknytning til rehabiliteringsoppholdet",
+        "value": "barnPårørende",
+        "type": "radio"
+      },
+      {
+        "label": "Døgnopphold",
+        "value": "døgnopphold",
+        "type": "radio"
+      },
+      {
+        "label": "Dagopphold",
+        "value": "dagopphold",
+        "type": "radio"
+      },
+      {
+        "label": "Poliklinikk",
+        "value": "poliklinikk",
+        "type": "radio",
+        "extra": "Poliklinikk, institusjon som behandler pasienter uten innleggelse på sengepost"
+
+      }
+    ],
+    "Faggrupper": [
+      {
+        "label": "Lege",
+        "value": "lege",
+        "type": "checkbox"
+      },
+      {
+        "label": "Sykepleier",
+        "value": "sykepleier",
+        "type": "checkbox"
+      },
+      {
+        "label": "Helsefagarbeider",
+        "value": "helsefagarbeider",
+        "type": "checkbox"
+      },
+      {
+        "label": "Klinisk psykolog",
+        "value": "kliniskPsykolog",
+        "type": "checkbox"
+      },
+      {
+        "label": "Nevropsykolog",
+        "value": "nevropsykolog",
+        "type": "checkbox"
+      },
+      {
+        "label": "Sosionom",
+        "value": "sosionom",
+        "type": "checkbox"
+      },
+      {
+        "label": "Ergoterapeut",
+        "value": "ergoterapeut",
+        "type": "checkbox"
+      },
+      {
+        "label": "Fysioterapeut",
+        "value": "fysioterapeut",
+        "type": "checkbox"
+      },
+      {
+        "label": "Ernæringsfysiolog",
+        "value": "ernæringsfysiolog",
+        "type": "checkbox"
+      },
+      {
+        "label": "Uroterapeut",
+        "value": "uroterapeut",
+        "type": "checkbox"
+      },
+      {
+        "label": "Logoped",
+        "value": "logoped",
+        "type": "checkbox"
+      },
+      {
+        "label": "Idrettspedagog",
+        "value": "idrettspedagog",
+        "type": "checkbox"
+      }
+    ],
+    "Problemstillinger": [
+      {
+        "label": "Arm-/håndfunksjon",
+        "value": "arm/hånd",
+        "type": "checkbox"
+      },
+      {
+        "label": "Gange-/balansefunksjon",
+        "value": "gange/balanse",
+        "type": "checkbox"
+      },
+      {
+        "label": "Spastisitet",
+        "value": "spastisitet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Smerte",
+        "value": "smerte",
+        "type": "checkbox"
+      },
+      {
+        "label": "Fatigue",
+        "value": "fatigue",
+        "type": "checkbox"
+      },
+      {
+        "label": "Blærefunksjon",
+        "value": "blære",
+        "type": "checkbox"
+      },
+      {
+        "label": "Tarmfunksjon",
+        "value": "tarm",
+        "type": "checkbox"
+      },
+      {
+        "label": "Depresjon/angst",
+        "value": "depresjon/angst",
+        "type": "checkbox"
+      },
+      {
+        "label": "Kognitiv funksjon",
+        "value": "kognitiv",
+        "type": "checkbox"
+      },
+      {
+        "label": "Søvn",
+        "value": "søvn",
+        "type": "checkbox"
+      },
+      {
+        "label": "Tale/språk/svelg",
+        "value": "tale/språk/svelg",
+        "type": "checkbox"
+      },
+      {
+        "label": "Lungefunksjon",
+        "value": "lunge",
+        "type": "checkbox"
+      },
+      {
+        "label": "Seksualfunksjon",
+        "value": "seksual",
+        "type": "checkbox"
+      },
+      {
+        "label": "Arbeidsrettet rehabilitering",
+        "value": "arbeidsrettet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Behov for hjelpemidler",
+        "value": "behovHjelpemidler",
+        "type": "checkbox"
+      },
+      {
+        "label": "Daglige aktiviteter",
+        "value": "aktiviteter",
+        "type": "checkbox"
+      },
+      {
+        "label": "Utforskning av nye former for fysisk aktivitet",
+        "value": "nyFysiskAktivitet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Kost/ernæring",
+        "value": "kost",
+        "type": "checkbox"
+      },
+      {
+        "label": "Stressmestring/\"Å leve med MS\"",
+        "value": "stressmestring",
+        "type": "checkbox"
+      },
+      {
+        "label": "Røykeslutt",
+        "value": "røykeslutt",
+        "type": "checkbox"
+      }
+    ]
+  }
+}
