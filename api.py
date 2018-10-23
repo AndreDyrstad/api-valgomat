@@ -42,12 +42,12 @@ class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         a = classify_document(json_data)
-        return {"center": a}
+        return {"center": "Her kommer navn på anbefalt senter"}
 
 class SubmitCenter(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        return {"message" : "Ditt svar er nå registrert"}
+        return {"message": "Ditt svar er nå registrert"}
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Classify, '/classify')
