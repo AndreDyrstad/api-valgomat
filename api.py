@@ -34,7 +34,6 @@ class Centers(Resource):
     def get(self):
         with open('storage/centers.json') as f:
             data = json.load(f)
-        print(type(data))
         pprint(data)
         return data
 
@@ -42,7 +41,10 @@ class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         a = classify_document(json_data)
-        return {"center": "Her kommer navn på anbefalt senter"}
+        with open('storage/treatmentCenters.json') as f:
+            data = json.load(f)
+        print(data)
+        return data
 
 class SubmitCenter(Resource):
     def post(self):

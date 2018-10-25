@@ -1,3 +1,5 @@
 venv/
 templates/
 static/
+
+.idea
