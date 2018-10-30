@@ -4,6 +4,12 @@ from flask_cors import CORS, cross_origin
 import json
 from pprint import pprint
 from classifier import classify_document
+from pymongo import MongoClient
+import pprint
+
+db = client['valgomat']
+collection = db['centers']
+pprint.pprint(collection.find_one())
 
 app = Flask(__name__)
 api = Api(app)
@@ -49,6 +55,8 @@ class Classify(Resource):
 class SubmitCenter(Resource):
     def post(self):
         json_data = request.get_json(force=True)
+        post_id = collection.insert_one(json_data).inserted_id
+        print(post_id)
         return {"message": "Ditt svar er nå registrert"}
 
 api.add_resource(HelloWorld, '/')
