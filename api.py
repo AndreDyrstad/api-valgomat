@@ -4,13 +4,16 @@ from flask_cors import CORS, cross_origin
 import json
 from pprint import pprint
 
-#from classifier import classify_document
+from classifier import classify_document
 from pymongo import MongoClient
 import pprint
+from collections import OrderedDict
 
+
+client = MongoClient('mongodb://admin:k4kesp4de@ds145463.mlab.com:45463/valgomat')
 db = client['valgomat']
 collection = db['centers']
-pprint.pprint(collection.find_one())
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -49,7 +52,10 @@ class Centers(Resource):
 class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        #a = classify_document(json_data)
+        #json_data = OrderedDict(sorted(json_data.items()))
+        #print(json_data)
+        a = classify_document(json_data)
+        print(a)
         with open('storage/treatmentCenters.json') as f:
             data = json.load(f)
         print(data)
