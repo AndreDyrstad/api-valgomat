@@ -35,25 +35,21 @@ def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
     for score in scores[0:show_top_x]:
         print(metadata[score[0]][1] + ":","%.2f" % score[1],new_metadata[score[0]-1])
 		
-	return generate_json(metadata,scores,new_metadata)
+    return generate_json(metadata,scores,new_metadata)
 
 	
 def generate_json(metadata,scores, new_metadata):
-	response = {}
-	response['centers'] = []
+    response = {}
+    response['centers'] = []
 	
-	for score in scores[0:3]:
+    for score in scores[0:3]:
 	
-		response['centers'].append({'name':metadata[score[0]][1],
-									'probability':score[1]
-									'link':'#'
-									'about':new_metadata[score[0]-1]})
+        response['centers'].append({'name':metadata[score[0]][1],'probability':score[1],'link':'#','about':new_metadata[score[0]-1]})
 								
-	return response
+    return response
 
 
 def predict_center(patient):
-
     new_patient = []
 
     for key in patient.keys():
@@ -69,7 +65,7 @@ def predict_center(patient):
     patient_number = 44
     show_top_x = 3
 
-	
+
     new_metadata = remove_items_from_center(metadata,patient)
     #patient = new_metadata[patient_number]
     #new_metadata.__delitem__(patient_number)
