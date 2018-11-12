@@ -8,13 +8,13 @@ def jaccard_similarity(x, y):
     return intersection_cardinality / float(union_cardinality)
 
 
-def remove_items_from_center(metadata, patient_number):
+def remove_items_from_center(metadata, patient):
     new_metadata = []
 
     for center in metadata:
         new_center = []
         for i in range(2,len(center)):
-            if center[i] in metadata[patient_number]:
+            if center[i] in patient:
                 new_center.append(center[i])
         new_metadata.append(new_center)
 
@@ -34,6 +34,22 @@ def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
 
     for score in scores[0:show_top_x]:
         print(metadata[score[0]][1] + ":","%.2f" % score[1],new_metadata[score[0]-1])
+		
+	return generate_json(metadata,scores,new_metadata)
+
+	
+def generate_json(metadata,scores, new_metadata):
+	response = {}
+	response['centers'] = []
+	
+	for score in scores[0:3]:
+	
+		response['centers'].append({'name':metadata[score[0]][1],
+									'probability':score[1]
+									'link':'#'
+									'about':new_metadata[score[0]-1]})
+								
+	return response
 
 
 def predict_center(patient):
@@ -53,10 +69,11 @@ def predict_center(patient):
     patient_number = 44
     show_top_x = 3
 
-    new_metadata = remove_items_from_center(metadata,patient_number)
+	
+    new_metadata = remove_items_from_center(metadata,patient)
     #patient = new_metadata[patient_number]
-    new_metadata.__delitem__(patient_number)
+    #new_metadata.__delitem__(patient_number)
 
-    calculate_and_print_scores(metadata, show_top_x, patient, new_metadata)
+    return calculate_and_print_scores(metadata, show_top_x, patient, new_metadata)
 
 #predict_center(patient)

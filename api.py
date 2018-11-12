@@ -9,6 +9,8 @@ from pymongo import MongoClient
 import pprint
 from jaccard import predict_center
 
+
+client = MongoClient('mongodb://admin:k4kesp4de@ds145463.mlab.com:45463/valgomat')
 db = client['valgomat']
 collection = db['centers']
 
@@ -55,7 +57,7 @@ class Classify(Resource):
         with open('storage/treatmentCenters.json') as f:
             data = json.load(f)
         print(data)
-        return data
+        return a
 
 class SubmitCenter(Resource):
     def post(self):
@@ -81,6 +83,6 @@ api.add_resource(Reload, '/reload')
 
 
 if __name__ == '__main__': 
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port="8020" ,debug=True)
 
 
