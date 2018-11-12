@@ -44,7 +44,7 @@ def generate_json(metadata,scores, new_metadata):
 	
     for score in scores[0:3]:
 	
-        response['centers'].append({'name':metadata[score[0]][1],'probability':score[1],'link':'#','about':new_metadata[score[0]-1]})
+        response['centers'].append({'name':metadata[score[0]][1],'probability':score[1],'link':'#','about':'informasjonå'})
 								
     return response
 

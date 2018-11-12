@@ -10,7 +10,6 @@ import pprint
 from jaccard import predict_center
 
 
-client = MongoClient('mongodb://admin:k4kesp4de@ds145463.mlab.com:45463/valgomat')
 db = client['valgomat']
 collection = db['centers']
 
@@ -25,7 +24,7 @@ parser.add_argument('task')
 
 class HelloWorld(Resource):
     def get(self):
-        with open('storage/patients.json') as f:
+        with open('storage/patients.json',encoding='utf-8') as f:
             data = json.load(f)
         print(type(data))
         json_string = json.dumps(data,ensure_ascii = False)
@@ -36,17 +35,21 @@ class HelloWorld(Resource):
 
 class Patients(Resource):
     def get(self):
-        with open('storage/patients.json') as f:
+        with open('storage/patients.json',encoding='utf-8') as f:
             data = json.load(f)
         print(type(data))
-        pprint(data)
+        json_string = json.dumps(data,ensure_ascii = False)
+        response = Response(json_string,content_type="application/json; charset=utf-8" )
+        print(response)
         return data
 
 class Centers(Resource):
     def get(self):
-        with open('storage/centers.json') as f:
+        with open('storage/centers.json',encoding='utf-8') as f:
             data = json.load(f)
-        pprint(data)
+        json_string = json.dumps(data,ensure_ascii = False)
+        response = Response(json_string,content_type="application/json; charset=utf-8" )
+        print(response)
         return data
 
 class Classify(Resource):
@@ -54,9 +57,6 @@ class Classify(Resource):
         json_data = request.get_json(force=True)
         a = predict_center(json_data)
         print(a)
-        with open('storage/treatmentCenters.json') as f:
-            data = json.load(f)
-        print(data)
         return a
 
 class SubmitCenter(Resource):
