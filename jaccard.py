@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import itertools
 
 def jaccard_similarity(x, y):
     intersection_cardinality = len(set.intersection(*[set(x), set(y)]))
@@ -37,6 +38,13 @@ def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
 
 def predict_center(patient):
 
+    new_patient = []
+
+    for key in patient.keys():
+        new_patient.append(patient[key])
+
+    patient = list(itertools.chain.from_iterable(new_patient))
+
     print(patient)
 
     metadata = pd.read_csv("centers3.csv", low_memory=False)
@@ -46,9 +54,9 @@ def predict_center(patient):
     show_top_x = 3
 
     new_metadata = remove_items_from_center(metadata,patient_number)
-    patient = new_metadata[patient_number]
+    #patient = new_metadata[patient_number]
     new_metadata.__delitem__(patient_number)
 
     calculate_and_print_scores(metadata, show_top_x, patient, new_metadata)
 
-predict_center()
+#predict_center(patient)
