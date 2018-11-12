@@ -3,12 +3,24 @@ import numpy as np
 import itertools
 
 def jaccard_similarity(x, y):
+    """
+    Formula to check the similarity of two sets.
+    :param x: set 1
+    :param y: set 2
+    :return: A score based on jaccard index
+    """
     intersection_cardinality = len(set.intersection(*[set(x), set(y)]))
     union_cardinality = len(set.union(*[set(x), set(y)]))
     return intersection_cardinality / float(union_cardinality)
 
 
 def remove_items_from_center(metadata, patient):
+    """
+    Clean the data to make it possible to use Jaccard. Remove name and id
+    :param metadata: data from centers
+    :param patient: patient data we want to use
+    :return: new list of metadata
+    """
     new_metadata = []
 
     for center in metadata:
@@ -22,6 +34,14 @@ def remove_items_from_center(metadata, patient):
 
 
 def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
+    """
+    Calculates the score for each center and selects the best tree
+    :param metadata: Data from centers
+    :param show_top_x: how many centers to show
+    :param patient: patient data
+    :param new_metadata: list of clean data from centers
+    :return: json with results
+    """
 
     scores = []
 
@@ -39,17 +59,29 @@ def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
 
 	
 def generate_json(metadata,scores, new_metadata):
+    """
+    Generate json based on results
+    :param metadata: data from centers
+    :param scores: scores form Jaccard
+    :param new_metadata: clean data
+    :return: json response with results
+    """
     response = {}
     response['centers'] = []
 	
     for score in scores[0:3]:
 	
-        response['centers'].append({'name':metadata[score[0]][1],'probability':score[1],'link':'#','about':'informasjonå'})
+        response['centers'].append({'name':metadata[score[0]][1],'probability':score[1],'link':'#','about':'informasjon'})
 								
     return response
 
 
 def predict_center(patient):
+    """
+    Main method to predict a center
+    :param patient: patient we want to predict
+    :return: json of scores
+    """
     new_patient = []
 
     for key in patient.keys():
