@@ -4,13 +4,11 @@ from flask_cors import CORS, cross_origin
 import json
 from pprint import pprint
 
-from classifier import classify_document
+from classifier import classify_document, make_classifier
 from pymongo import MongoClient
 import pprint
-from collections import OrderedDict
+from jaccard import predict_center
 
-
-client = MongoClient('mongodb://admin:k4kesp4de@ds145463.mlab.com:45463/valgomat')
 db = client['valgomat']
 collection = db['centers']
 
@@ -52,9 +50,7 @@ class Centers(Resource):
 class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        #json_data = OrderedDict(sorted(json_data.items()))
-        #print(json_data)
-        a = classify_document(json_data)
+        a = predict_center(json_data)
         print(a)
         with open('storage/treatmentCenters.json') as f:
             data = json.load(f)
@@ -68,14 +64,23 @@ class SubmitCenter(Resource):
         print(post_id)
         return {"message": "Ditt svar er nå registrert"}
 
+class Reload(Resource):
+    def get(self):
+        data = []
+        for item in collection.find():
+            data.append(item)
+        make_classifier(data)
+        return{"message": "Ferdig"}
+
 api.add_resource(HelloWorld, '/')
 api.add_resource(Classify, '/classify')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
 api.add_resource(SubmitCenter, '/train')
+api.add_resource(Reload, '/reload')
 
 
 if __name__ == '__main__': 
-    app.run(host="0.0.0.0",port="8020" ,debug=True)
+    app.run(debug=True)
 
 

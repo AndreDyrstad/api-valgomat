@@ -4,7 +4,7 @@
     "description": "Beskrivelse av undersøkelsen"
   },
   "questions": {
-    "Om dere": [
+    "Informasjon om dere": [
       {
         "label": "Navn på institusjon/rehabiliteringsavdeling",
         "value": "navn",
@@ -27,7 +27,7 @@
         "extra": "Denne adressen brukes hvis det er noen spørsmål til deres besvarelse"
       }
     ],
-    "Regioner": [
+    "For private institusjoner: Hvilke(n) helseregion(er) er det gjort avtale med?": [
       {
         "label": "Helse Nord",
         "value": "helseNord",
@@ -94,7 +94,7 @@
     ],
     "Type opphold": [
       {
-        "label": "Inntak gruppevis for personer med MS?",
+        "label": "Tilbud til personer med MS",
         "value": "gruppevis",
         "type": "radio"
       },
@@ -146,7 +146,7 @@
 
       }
     ],
-    "Faggrupper": [
+    "Faggrupper/profesjoner som er tilknyttet MS-rehabiliteringen": [
       {
         "label": "Lege",
         "value": "lege",
@@ -208,7 +208,7 @@
         "type": "checkbox"
       }
     ],
-    "Problemstillinger": [
+    "Tilbud omfatter rehabilitering for": [
       {
         "label": "Arm-/håndfunksjon",
         "value": "arm/hånd",
@@ -308,6 +308,13 @@
         "label": "Røykeslutt",
         "value": "røykeslutt",
         "type": "checkbox"
+      }
+    ],
+    "Annet": [
+      {
+        "label": "Annen informasjon",
+        "value": "annet",
+        "type": "textarea"
       }
     ]
   }

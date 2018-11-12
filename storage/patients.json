@@ -1,10 +1,11 @@
 {
   "introduction":{
     "header": "Valgomat for pasienter",
-    "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se LINK. Noe økonomigreier jeg ikke husker."
+    "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se linken under. Noe økonomigreier jeg ikke husker.",
+    "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"
   },
   "questions": {
-    "Viktig": [
+    "Hva er viktig for deg": [
       {
         "label": "Nærhet til hjemmet",
         "value": "nærhet",
@@ -65,7 +66,7 @@
         "type": "checkbox"
       }
     ],
-    "Opphold": [
+    "Behov for type opphold": [
       {
         "label": "Informasjonsopphold",
         "value": "informasjon",
@@ -102,7 +103,109 @@
         "type": "checkbox"
       }
     ],
-    "Problemstilliger": [
+    "Hva er de to viktigste problemstillingen du ønsker rehabilitering for?": [
+      {
+        "label": "Arm-/håndfunksjon",
+        "value": "arm/hånd",
+        "type": "checkbox"
+      },
+      {
+        "label": "Gange-/balansefunksjon",
+        "value": "gange/balanse",
+        "type": "checkbox"
+      },
+      {
+        "label": "Spastisitet",
+        "value": "spastisitet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Smerte",
+        "value": "smerte",
+        "type": "checkbox"
+      },
+      {
+        "label": "Fatigue",
+        "value": "fatigue",
+        "type": "checkbox"
+      },
+      {
+        "label": "Blærefunksjon",
+        "value": "blære",
+        "type": "checkbox"
+      },
+      {
+        "label": "Tarmfunksjon",
+        "value": "tarm",
+        "type": "checkbox"
+      },
+      {
+        "label": "Depresjon/angst",
+        "value": "depresjon/angst",
+        "type": "checkbox"
+      },
+      {
+        "label": "Kognitiv funksjon",
+        "value": "kognitiv",
+        "type": "checkbox"
+      },
+      {
+        "label": "Søvn",
+        "value": "søvn",
+        "type": "checkbox"
+      },
+      {
+        "label": "Tale/språk/svelg",
+        "value": "tale/språk/svelg",
+        "type": "checkbox"
+      },
+      {
+        "label": "Lungefunksjon",
+        "value": "lunge",
+        "type": "checkbox"
+      },
+      {
+        "label": "Seksualfunksjon",
+        "value": "seksual",
+        "type": "checkbox"
+      },
+      {
+        "label": "Arbeidsrettet rehabilitering",
+        "value": "arbeidsrettet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Behov for hjelpemidler",
+        "value": "behovHjelpemidler",
+        "type": "checkbox"
+      },
+      {
+        "label": "Daglige aktiviteter",
+        "value": "aktiviteter",
+        "type": "checkbox"
+      },
+      {
+        "label": "Utforskning av nye former for fysisk aktivitet",
+        "value": "nyFysiskAktivitet",
+        "type": "checkbox"
+      },
+      {
+        "label": "Kost/ernæring",
+        "value": "kost",
+        "type": "checkbox"
+      },
+      {
+        "label": "Stressmestring/\"Å leve med MS\"",
+        "value": "stressmestring",
+        "type": "checkbox"
+      },
+      {
+        "label": "Røykeslutt",
+        "value": "røykeslutt",
+        "type": "checkbox"
+      }
+    ],
+    "Nevn 3 andre problemstillinger du har behov rehabilitering for?": [
       {
         "label": "Arm-/håndfunksjon",
         "value": "arm/hånd",
