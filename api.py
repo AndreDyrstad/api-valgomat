@@ -2,16 +2,11 @@ from flask import Flask, jsonify, request, make_response, Response
 from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
-from pprint import pprint
-
-from classifier import classify_document, make_classifier
-from pymongo import MongoClient
-import pprint
 from jaccard import predict_center
+from sql_add import init, get_all_questions
 
-
-db = client['valgomat']
-collection = db['centers']
+#db = client['valgomat']
+#collection = db['centers']
 
 
 app = Flask(__name__)
@@ -26,10 +21,16 @@ class HelloWorld(Resource):
     def get(self):
         with open('storage/patients.json',encoding='utf-8') as f:
             data = json.load(f)
-        print(type(data))
         json_string = json.dumps(data,ensure_ascii = False)
         response = Response(json_string,content_type="application/json; charset=utf-8" )
         print(response)
+
+        session = init()
+        file = get_all_questions(session)
+        print(file)
+
+        response = json.dumps(file,ensure_ascii=False)
+
         return response
 
 
@@ -62,16 +63,16 @@ class Classify(Resource):
 class SubmitCenter(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        post_id = collection.insert_one(json_data).inserted_id
-        print(post_id)
+        #post_id = collection.insert_one(json_data).inserted_id
+        #print(post_id)
         return {"message": "Ditt svar er nå registrert"}
 
 class Reload(Resource):
     def get(self):
         data = []
-        for item in collection.find():
-            data.append(item)
-        make_classifier(data)
+        #for item in collection.find():
+            #data.append(item)
+        #make_classifier(data)
         return{"message": "Ferdig"}
 
 api.add_resource(HelloWorld, '/')
@@ -83,6 +84,7 @@ api.add_resource(Reload, '/reload')
 
 
 if __name__ == '__main__': 
-    app.run(host="0.0.0.0",port="8020" ,debug=True)
+    #app.run(host="0.0.0.0",port="8020" ,debug=True)
+    app.run(debug=True)
 
 
