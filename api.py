@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center
-from sql_add import init, get_all_questions
+from sql_queries import init, get_all_questions
 
 #db = client['valgomat']
 #collection = db['centers']

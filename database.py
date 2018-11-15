@@ -9,7 +9,7 @@ class Entity(Base):
     __tablename__ = 'entity'
     id = Column(Integer, primary_key=True)
     type = Column(String, nullable=False)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
 
 class Patient(Base):
     __tablename__ = 'patient'
@@ -29,6 +29,7 @@ class Address(Base):
 class Center(Base):
     __tablename__ = 'center'
     id = Column(Integer, ForeignKey('entity.id'), primary_key=True)
+    contact_person = Column(String)
     phone_number = Column(Integer, nullable=False)
     entity = relationship(Entity)
 
@@ -36,15 +37,25 @@ class Question(Base):
     __tablename__ = 'question'
     id = Column(Integer, primary_key=True)
     label = Column(String, nullable=False)
-    value = Column(String, nullable=False)
+    value = Column(String, nullable=False,  unique=True)
     info = Column(String, nullable=False)
 
 class Score(Base):
     __tablename__ = 'score'
-    patient_id = Column(Integer, ForeignKey('entity.id'), primary_key=True)
+    entity_id = Column(Integer, ForeignKey('entity.id'), primary_key=True)
     question_id = Column(Integer, ForeignKey('question.id'), primary_key=True)
     score = Column(Float)
     entity = relationship(Entity)
+    question = relationship(Question)
+
+class Response(Base):
+    __tablename__ = 'response'
+    patient_id = Column(Integer, ForeignKey('patient.id'), primary_key=True)
+    center_id = Column(Integer, ForeignKey('center.id'), primary_key=True)
+    question_id = Column(Integer, ForeignKey('question.id'), primary_key=True)
+    score = Column(Float)
+    patient = relationship(Patient)
+    center = relationship(Center)
     question = relationship(Question)
 
 
