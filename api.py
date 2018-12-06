@@ -2,8 +2,8 @@ from flask import Flask, jsonify, request, make_response, Response
 from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
-from jaccard import predict_center
-from sql_queries import init, get_all_questions
+from jaccard import predict_center, use_scores
+from sql_queries import init, get_all_questions, insert_patient_answers
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -27,9 +27,11 @@ class HelloWorld(Resource):
 
         session = init()
         file = get_all_questions(session)
+
         print(file)
 
-        response = json.dumps(file,ensure_ascii=False)
+        json_string = json.dumps(file,ensure_ascii=False)
+        response = Response(json_string,content_type="application/json; charset=utf-8" )
 
         return response
 
@@ -57,6 +59,7 @@ class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         a = predict_center(json_data)
+        print(insert_patient_answers(init(),json_data))
         print(a)
         return a
 
@@ -67,20 +70,19 @@ class SubmitCenter(Resource):
         #print(post_id)
         return {"message": "Ditt svar er nå registrert"}
 
-class Reload(Resource):
-    def get(self):
-        data = []
-        #for item in collection.find():
-            #data.append(item)
-        #make_classifier(data)
-        return{"message": "Ferdig"}
+class Classify_Scores(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        print(json_data)
+        return use_scores(json_data)
+
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Classify, '/classify')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
 api.add_resource(SubmitCenter, '/train')
-api.add_resource(Reload, '/reload')
+api.add_resource(Classify_Scores, '/scores')
 
 
 if __name__ == '__main__': 

@@ -38,7 +38,7 @@ class Question(Base):
     id = Column(Integer, primary_key=True)
     label = Column(String, nullable=False)
     value = Column(String, nullable=False,  unique=True)
-    info = Column(String, nullable=False)
+    info = Column(String)
 
 class Score(Base):
     __tablename__ = 'score'

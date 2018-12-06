@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import itertools
+import math
 
 def jaccard_similarity(x, y):
     """
@@ -50,10 +51,9 @@ def calculate_and_print_scores(metadata, show_top_x, patient, new_metadata):
 
     scores = sorted(scores, key=lambda x: x[1], reverse=True)
 
-    print(patient)
 
-    for score in scores[0:show_top_x]:
-        print(metadata[score[0]][1] + ":","%.2f" % score[1],new_metadata[score[0]-1])
+    #for score in scores[0:show_top_x]:
+        #print(metadata[score[0]][1] + ":","%.2f" % score[1],new_metadata[score[0]-1])
 		
     return generate_json(metadata,scores,new_metadata)
 
@@ -89,8 +89,6 @@ def predict_center(patient):
 
     patient = list(itertools.chain.from_iterable(new_patient))
 
-    print(patient)
-
     metadata = pd.read_csv("centers3.csv", low_memory=False)
     metadata = np.array(metadata)
 
@@ -104,4 +102,77 @@ def predict_center(patient):
 
     return calculate_and_print_scores(metadata, show_top_x, patient, new_metadata)
 
+
+def use_scores(patient):
+
+    patient_information = []
+
+    for key, value in patient.items():
+        patient_information.append((key,value))
+
+    patient_information = sorted(patient_information, key=lambda x: x[1], reverse=True)
+
+    metadata = pd.read_csv("centers3.csv", low_memory=False)
+    metadata = np.array(metadata)
+
+    scores = []
+
+    for element in metadata:
+        current_score = 0
+        for name, score in patient_information:
+            if name in element:
+                current_score += score
+        scores.append((element[1],current_score))
+
+    scores = sorted(scores, key=lambda x: x[1], reverse=True)
+
+    print(scores)
+
+    response = {'centers': []}
+
+    for score in scores[0:3]:
+        response['centers'].append({'name':score[0],'probability':score[1],'link':'#','about':'informasjon'})
+
+    return response
+
+
+"""use_scores({'aktiviteter': 75,
+            'arbeidsrettet': 50,
+            'arm/hånd': 50,
+            'barnPårørende': 10,
+            'basseng': 50,
+            'behovHjelpemidler': 100,
+            'bevegelseshemmedeUte': 50,
+            'bevegelseshemmendeInne': 50,
+            'blære': 50,
+            'dagopphold': 50,
+            'depresjon/angst': 50,
+            'døgnopphold': 50,
+            'fatigue': 50,
+            'gange/balanse': 40,
+            'gruppe': 50,
+            'individuell': 50,
+            'informasjon': 50,
+            'kognitiv': 50,
+            'kost': 50,
+            'lunge': 50,
+            'nyFysiskAktivitet': 50,
+            'nærhet': 50,
+            'poliklinikk': 50,
+            'rehabilitering': 35,
+            'rehabiliteringGradvis': 50,
+            'rehabiliteringRaskt': 100,
+            'røykeslutt': 50,
+            'sammeDiagnose': 50,
+            'seksual': 50,
+            'selvhjulpen': 50,
+            'smerte': 50,
+            'spastisitet': 50,
+            'stressmestring': 75,
+            'søvn': 50,
+            'tale/språk/svelg': 50,
+            'tarm': 50,
+            'voksnePårørende': 100,
+            'vurdering': 50,
+            })"""
 #predict_center(patient)
