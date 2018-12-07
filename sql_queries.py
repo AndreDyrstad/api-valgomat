@@ -165,12 +165,11 @@ def insert_new_center(json_data):
     session = init()
     questions = get_all_questions(session)["questions"]
 
-    print(questions)
+    print(json_data)
 
     new_entity = Entity(type="center", name=json_data["navn"])
     new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
     new_address = Address(street_name="testname", street_number=51, post_code=1236, entity=new_entity)
-    print(questions)
 
 
     session.add(new_entity)
@@ -181,14 +180,19 @@ def insert_new_center(json_data):
 
     keys = json_data.keys()
 
-    print()
-    print(keys)
-    print()
-
     for key in keys:
         for question in questions:
-            if key == question["value"]:
-                #print(set_new_question_score_for_center(session, json_data["navn"],question["value"],50))
+            if isinstance(json_data[key], list):
+                for data in json_data[key]:
+                    print(data)
+                    if data == question["value"]:
+                        q = session.query(Question).filter(Question.value == data).first()
+                        new_score = Score(entity=new_entity, question=q, score=50.0)
+                        session.add(new_score)
+                        session.commit()
+
+            elif key == question["value"] and not json_data[key] == 'false':
+                print()
                 q = session.query(Question).filter(Question.value == question["value"]).first()
                 new_score = Score(entity=new_entity, question=q, score=50.0)
                 session.add(new_score)
