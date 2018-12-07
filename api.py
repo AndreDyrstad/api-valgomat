@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center, use_scores
-from sql_queries import init, get_all_questions, insert_patient_answers
+from sql_queries import init, get_all_questions, insert_patient_answers, insert_new_center
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -66,6 +66,7 @@ class Classify(Resource):
 class SubmitCenter(Resource):
     def post(self):
         json_data = request.get_json(force=True)
+        insert_new_center(json_data)
         #post_id = collection.insert_one(json_data).inserted_id
         #print(post_id)
         return {"message": "Ditt svar er nå registrert"}

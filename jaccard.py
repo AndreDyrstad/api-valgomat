@@ -104,9 +104,16 @@ def predict_center(patient):
 
 
 def use_scores(patient):
+    """
+    Used to calculate the scores when a patient is submitting answers.
+    This is used when the data i submitted with the slider form.
+    :param patient:
+    :return:
+    """
 
     patient_information = []
 
+    #Make tuple
     for key, value in patient.items():
         patient_information.append((key,value))
 
@@ -117,21 +124,33 @@ def use_scores(patient):
 
     scores = []
 
+    #Calculate score for each center
     for element in metadata:
         current_score = 0
+        good_match = []
         for name, score in patient_information:
             if name in element:
-                current_score += score
-        scores.append((element[1],current_score))
+                current_score += score - 5
+                if score > 5:
+                    good_match.append(name)
+
+        scores.append((element[1],current_score,good_match))
 
     scores = sorted(scores, key=lambda x: x[1], reverse=True)
 
-    print(scores)
-
     response = {'centers': []}
 
+    #Generate return string
     for score in scores[0:3]:
-        response['centers'].append({'name':score[0],'probability':score[1],'link':'#','about':'informasjon'})
+        response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'informasjon'})
+
+    for r in response['centers']:
+        print(r)
+        print()
+    print(patient_information)
+    print()
+    print()
+    print()
 
     return response
 
