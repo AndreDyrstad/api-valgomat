@@ -4,7 +4,7 @@ import json
 import random
 import itertools
 
-from database import Address, Base, Patient, Question, Score, Entity, Center, Response
+from database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
 
 # Insert: Add new element to the database
 # Set: Change cell/row
@@ -27,7 +27,7 @@ def init():
     return DBSession()
 
 
-def random_string(session):
+def random_string():
     """
     Generates a random unique 64 bits string of length 10
     :param session: current session
@@ -35,22 +35,24 @@ def random_string(session):
     """
     valid = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_'
 
-    entities = get_all_entities(session)
+    entities = get_all_entities()
     string = ''.join((random.choice(valid) for i in range(10)))
     for entity in entities:
         if entity.name == string:
-            return random_string(session)
+            return random_string()
 
     return string
 
 
 
-def fill_table(session):
+def fill_table():
     """
     Used for testing. Adds test values to the database.
     :param session: current session
     :return: None
     """
+
+    session = init()
 
     new_entity = Entity(type="center", name="Senter 1")
     new_center = Center(contact_person = "mail@address.com", phone_number=12345678, entity=new_entity)
@@ -58,7 +60,7 @@ def fill_table(session):
     new_question = Question(label="Spørsmål 1", value="spørsmål1", info="Mer info")
     new_Score = Score(score=50.0, entity=new_entity, question=new_question)
 
-    new_entity2 = Entity(type="patient", name=random_string(session))
+    new_entity2 = Entity(type="patient", name=random_string())
     new_patient = Patient(date_of_birth = "03.04.05", entity=new_entity2)
     new_address2 = Address(street_name="sesame street", street_number=2, post_code=9999, entity=new_entity2)
     new_question2 = Question(label="Spørsmål 2", value="spørsmål2", info="Enda mer info")
@@ -84,13 +86,18 @@ def fill_table(session):
 
     session.commit()
 
+    session.close()
 
-def insert_questions_from_json(session):
+
+def insert_questions_from_json():
     """
     Read questions from a json file and add it to the database.
     :param session:
     :return:
     """
+
+    session = init()
+
     with open('storage/all_questions.json') as f:
         data = json.load(f)
 
@@ -105,8 +112,13 @@ def insert_questions_from_json(session):
             else:
                 insert_question(row["label"], row["value"], None, session)
 
+    new_connection = Connection(question_id=28, connected_to_id=40)
+    session.add(new_connection)
+    session.commit()
 
-def insert_question(label, value, info, session):
+    session.close()
+
+def insert_question(label, value, info):
     """
     Used to insert a new question to the database.
     :param label: Question label
@@ -115,19 +127,23 @@ def insert_question(label, value, info, session):
     :param session: current session
     :return: None
     """
+    session = init()
 
     new_question = Question(label=label, value=value, info=info)
     session.add(new_question)
     session.commit()
+    session.close()
 
 
-def insert_patient_answers(session, answers):
+def insert_patient_answers(answers):
     """
     Inserts a new answers from a patient.
     :param answers: patient answers
     :param session: current session
     :return: patient with anonymous name
     """
+
+    session = init()
 
     new_answers = []
 
@@ -136,7 +152,7 @@ def insert_patient_answers(session, answers):
 
     answers = list(itertools.chain.from_iterable(new_answers))
 
-    new_entity = Entity(name=random_string(session), type="patient")
+    new_entity = Entity(name=random_string(), type="patient")
     new_patient = Patient(date_of_birth="11.11.11", entity=new_entity)
     session.add(new_patient)
     session.add(new_entity)
@@ -156,6 +172,8 @@ def insert_patient_answers(session, answers):
 
     session.commit()
 
+    session.close()
+
     return new_entity.name
 
 
@@ -167,7 +185,7 @@ def insert_new_center(json_data):
     :return: None
     """
     session = init()
-    questions = get_all_questions(session)["questions"]
+    questions = get_all_questions()["questions"]
 
     new_entity = Entity(type="center", name=json_data["navn"])
     new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
@@ -201,7 +219,7 @@ def insert_new_center(json_data):
     session.close()
 
 
-def set_new_question_score_for_center(session, name, question, score):
+def set_new_question_score_for_center( name, question, score):
     """
     Change the score for a center according to the input value
     :param session: current session
@@ -211,33 +229,50 @@ def set_new_question_score_for_center(session, name, question, score):
     :return: Status
     """
 
+    session = init()
+
     center_id = session.query(Entity.id).filter(Entity.name == name).first()
     question_id = session.query(Question.id).filter(Question.value == question).first()
 
     try:
         session.query(Score).filter(Score.entity_id == center_id[0]).filter(Score.question_id == question_id[0]).update({"score": score})
         session.commit()
+        session.close()
         return "Success"
     except:
         session.rollback()
+        session.close()
         return "Error"
 
 
-def get_all_questions(session):
+def get_all_connections():
+    session = init()
+
+    q = session.query(Connection).all()
+
+    session.close()
+    return q
+
+def get_all_questions():
     """
     Gets all the questions from the database
     :param session: current session
     :return: dict of questions
     """
 
+    session = init()
+
     questions = session.query(Question).all()
     elements = []
     for q in questions:
         elements.append(question_to_dict(q))
     response = {'questions': elements}
+
+    session.close()
+
     return response
 
-def get_patient_scores_by_name(session, name):
+def get_patient_scores_by_name( name):
     """
     Gives a list of all the questions answered by a patient as well as scores for each question
     :param session: current session
@@ -245,7 +280,11 @@ def get_patient_scores_by_name(session, name):
     :return: list of scores
     """
 
+    session = init()
+
     q = session.query(Entity.name, Question.label, Score.score).join(Score).join(Question).filter(Entity.type == "patient").filter(Entity.name == name).all()
+
+    session.close()
 
     return q
 
@@ -265,14 +304,25 @@ def get_center_scores_by_name(name):
     return q
 
 def get_all_center_scores():
+    """
+    Get all scores from all the centers
+    :return: list of element: Center name, question value, score
+    """
     session = init()
 
-    q = session.query(Entity.name, Question.value, Score.score).join(Score).join(Question).filter(Entity.type == "center").all()
+    q = session.query(Entity, Question, Score).join(Score).join(Question).filter(Entity.type == "center").all()
+
+    session.close()
 
     return q
 
-def get_all_entities(session):
+def get_all_entities():
+
+    session = init()
+
     q = session.query(Entity).all()
+
+    session.close()
 
     return q
 
@@ -283,12 +333,12 @@ def question_to_dict(q):
 
 
 #session = init()
-#insert_questions_from_json(session)
-#fill_table(session)
-#get_patient_scores_by_name(session, "Top Secret")
-#get_center_scores_by_name(session, "Senter 1")
-#set_new_question_score_for_center(session, "Senter 1", "spørsmål1")
+#insert_questions_from_json()
+#fill_table()
+#get_patient_scores_by_name( "Top Secret")
+#get_center_scores_by_name( "Senter 1")
+#set_new_question_score_for_center( "Senter 1", "spørsmål1")
 
 #.filter(Entity.type == "center")
 
-#print(random_string(session))
+#print(random_string())

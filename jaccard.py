@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import itertools
-from sql_queries import get_all_center_scores
+from sql_queries import get_all_center_scores, get_all_connections
 
 def jaccard_similarity(x, y):
     """
@@ -114,7 +114,7 @@ def use_scores(patient):
     patient_information = []
 
     #Make tuple
-    #Remove all answers with the score of 5, since they add up to 0 at the end
+    #Remove all answers with the score of 5, since they add up to 0 at the end anyway
     #Reduces runtime
     for key, value in patient.items():
         if value != 5:
@@ -127,6 +127,11 @@ def use_scores(patient):
 
     #get scores from database
     center_scores = get_all_center_scores()
+    connections = get_all_connections()
+
+    print(connections[0])
+
+
     all_center_scores = []
 
     #Calculate score for each center
@@ -140,8 +145,8 @@ def use_scores(patient):
     for center_score in center_scores:
 
         #Add to the same score as long as the center name is the same
-        if center_score[0] != current_center[0]:
-            all_center_scores.append((current_center[0],score_for_current_center,good_match_question))
+        if center_score.Entity.name != current_center.Entity.name:
+            all_center_scores.append((current_center.Entity.name,score_for_current_center,good_match_question))
             score_for_current_center = 0
             good_match_question = []
         current_center = center_score
@@ -149,12 +154,19 @@ def use_scores(patient):
         #Iterate answers and add scores -5 to 5 to the current score
         for question_name, answer_score in patient_information:
             i += 1
-            if question_name == center_score[1]:
+            if question_name == center_score.Question.value:
                 score_for_current_center += answer_score - 5
+
+                #Check if the question is connected to any other question
+                for connection in connections:
+                    if connection.question_id == center_score.Question.id:
+                        #Todo Make code to add score for questions that are connected
+                        print("found connection!!!!!!!!!!!!!!!!!!!!!!!!!")
+
                 if answer_score > 5:
                     good_match_question.append(question_name)
 
-    all_center_scores.append((current_center[0], score_for_current_center, good_match_question))
+    all_center_scores.append((current_center.Entity.name, score_for_current_center, good_match_question))
 
     all_center_scores = sorted(all_center_scores, key=lambda x: x[1], reverse=True)
 
@@ -165,14 +177,6 @@ def use_scores(patient):
     #Generate return string
     for score in all_center_scores[0:3]:
         response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'informasjon'})
-
-    for r in response['centers']:
-        print(r)
-        print()
-    print(patient_information)
-    print()
-    print()
-    print()
 
     return response
 

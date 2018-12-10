@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center, use_scores
-from sql_queries import init, get_all_questions, insert_patient_answers, insert_new_center
+from sql_queries import get_all_questions, insert_patient_answers, insert_new_center
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -25,8 +25,7 @@ class HelloWorld(Resource):
         response = Response(json_string,content_type="application/json; charset=utf-8" )
         print(response)
 
-        session = init()
-        file = get_all_questions(session)
+        file = get_all_questions()
 
         print(file)
 
@@ -59,7 +58,7 @@ class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         a = predict_center(json_data)
-        print(insert_patient_answers(init(),json_data))
+        print(insert_patient_answers(json_data))
         print(a)
         return a
 
