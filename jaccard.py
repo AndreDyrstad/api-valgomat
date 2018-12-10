@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import itertools
-import math
+from sql_queries import get_all_center_scores
 
 def jaccard_similarity(x, y):
     """
@@ -114,34 +114,56 @@ def use_scores(patient):
     patient_information = []
 
     #Make tuple
+    #Remove all answers with the score of 5, since they add up to 0 at the end
+    #Reduces runtime
     for key, value in patient.items():
-        patient_information.append((key,value))
+        if value != 5:
+            patient_information.append((key,value))
 
     patient_information = sorted(patient_information, key=lambda x: x[1], reverse=True)
 
-    metadata = pd.read_csv("centers3.csv", low_memory=False)
-    metadata = np.array(metadata)
+    #metadata = pd.read_csv("centers3.csv", low_memory=False)
+    #metadata = np.array(metadata)
 
-    scores = []
+    #get scores from database
+    center_scores = get_all_center_scores()
+    all_center_scores = []
 
     #Calculate score for each center
-    for element in metadata:
-        current_score = 0
-        good_match = []
-        for name, score in patient_information:
-            if name in element:
-                current_score += score - 5
-                if score > 5:
-                    good_match.append(name)
+    current_center = center_scores[0]
+    score_for_current_center = 0
+    good_match_question = []
 
-        scores.append((element[1],current_score,good_match))
+    #Number of iterations (testing only)
+    i = 0
 
-    scores = sorted(scores, key=lambda x: x[1], reverse=True)
+    for center_score in center_scores:
+
+        #Add to the same score as long as the center name is the same
+        if center_score[0] != current_center[0]:
+            all_center_scores.append((current_center[0],score_for_current_center,good_match_question))
+            score_for_current_center = 0
+            good_match_question = []
+        current_center = center_score
+
+        #Iterate answers and add scores -5 to 5 to the current score
+        for question_name, answer_score in patient_information:
+            i += 1
+            if question_name == center_score[1]:
+                score_for_current_center += answer_score - 5
+                if answer_score > 5:
+                    good_match_question.append(question_name)
+
+    all_center_scores.append((current_center[0], score_for_current_center, good_match_question))
+
+    all_center_scores = sorted(all_center_scores, key=lambda x: x[1], reverse=True)
+
+    print("Number of iterations: ", i)
 
     response = {'centers': []}
 
     #Generate return string
-    for score in scores[0:3]:
+    for score in all_center_scores[0:3]:
         response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'informasjon'})
 
     for r in response['centers']:

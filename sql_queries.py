@@ -136,8 +136,6 @@ def insert_patient_answers(session, answers):
 
     answers = list(itertools.chain.from_iterable(new_answers))
 
-    print(answers,"jdgnjlnøasdgkdfgjsgfdgdjgjsdfhgkdhgjødshgjødkhgiurngsdjkgjædsgf")
-
     new_entity = Entity(name=random_string(session), type="patient")
     new_patient = Patient(date_of_birth="11.11.11", entity=new_entity)
     session.add(new_patient)
@@ -162,10 +160,14 @@ def insert_patient_answers(session, answers):
 
 
 def insert_new_center(json_data):
+    """
+    Inserts a new center to the database.
+    All the questions answered is also added to the database with a default score of 50.
+    :param json_data: json_data from the frontend application
+    :return: None
+    """
     session = init()
     questions = get_all_questions(session)["questions"]
-
-    print(json_data)
 
     new_entity = Entity(type="center", name=json_data["navn"])
     new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
@@ -184,7 +186,6 @@ def insert_new_center(json_data):
         for question in questions:
             if isinstance(json_data[key], list):
                 for data in json_data[key]:
-                    print(data)
                     if data == question["value"]:
                         q = session.query(Question).filter(Question.value == data).first()
                         new_score = Score(entity=new_entity, question=q, score=50.0)
@@ -192,7 +193,6 @@ def insert_new_center(json_data):
                         session.commit()
 
             elif key == question["value"] and not json_data[key] == 'false':
-                print()
                 q = session.query(Question).filter(Question.value == question["value"]).first()
                 new_score = Score(entity=new_entity, question=q, score=50.0)
                 session.add(new_score)
@@ -249,15 +249,25 @@ def get_patient_scores_by_name(session, name):
 
     return q
 
-def get_center_scores_by_name(session, name):
+def get_center_scores_by_name(name):
     """
     Gives a list of every question answered by the center as well as scores for each question
     :param session: current session
     :param name: name of center
     :return: list of scores
     """
+    session = init()
 
     q = session.query(Entity.name, Question.label, Score.score).join(Score).join(Question).filter(Entity.type == "center").filter(Entity.name == name).all()
+
+    session.close()
+
+    return q
+
+def get_all_center_scores():
+    session = init()
+
+    q = session.query(Entity.name, Question.value, Score.score).join(Score).join(Question).filter(Entity.type == "center").all()
 
     return q
 

@@ -58,6 +58,13 @@ class Response(Base):
     center = relationship(Center)
     question = relationship(Question)
 
+class Connection(Base):
+    __tablename__= 'connection'
+    question_id = Column(Integer,ForeignKey('question.id'), primary_key=True)
+    connected_to_id = Column(Integer,ForeignKey('question.id'), primary_key=True)
+    question = relationship(Question,foreign_keys=[question_id])
+    connected = relationship(Question, foreign_keys=[connected_to_id])
+
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
