@@ -108,9 +108,9 @@ def insert_questions_from_json():
         for i in range(len(items)):
             row = items[i]
             if "extra" in items[i]:
-                insert_question(row["label"],row["value"],row["extra"],session)
+                insert_question(row["label"],row["value"],row["extra"])
             else:
-                insert_question(row["label"], row["value"], None, session)
+                insert_question(row["label"], row["value"], None)
 
     new_connection = Connection(question_id=28, connected_to_id=40)
     session.add(new_connection)
@@ -145,17 +145,13 @@ def insert_patient_answers(answers):
 
     session = init()
 
-    print(answers)
-
     new_answers = []
 
     for key in answers.keys():
         new_answers.append(answers[key])
 
     new_entity = Entity(name=random_string(), type="patient")
-    new_patient = Patient(date_of_birth="1995", entity=new_entity)
-
-
+    new_patient = Patient(date_of_birth="11.11.11", entity=new_entity)
     new_address = Address(post_code="1337", entity=new_entity)
 
     session.add(new_address)
