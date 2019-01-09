@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center, use_scores
-from sql_queries import get_all_questions, insert_patient_answers, insert_new_center
+from sql_queries import get_all_questions, insert_patient_answers, insert_new_center, get_all_questions_for_response_site_given_name, insert_patient_response
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -62,7 +62,7 @@ class Classify(Resource):
         print(a)
         return a
 
-class SubmitCenter(Resource):
+class Submit_Center(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         insert_new_center(json_data)
@@ -73,16 +73,35 @@ class SubmitCenter(Resource):
 class Classify_Scores(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        insert_patient_answers(json_data)
-        return use_scores(json_data)
+        random_patient_id = insert_patient_answers(json_data)
+        recommended_centers = use_scores(json_data)
+        return recommended_centers
+
+class Get_Response_Questions_By_ID(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        print(json_data['patient_id'])
+        data = get_all_questions_for_response_site_given_name(json_data['patient_id'])
+        print(data)
+        json_string = json.dumps(data,ensure_ascii = False)
+        response = Response(json_string,content_type="application/json; charset=utf-8" )
+        return response
+
+class Send_Patient_Response(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        print(json_data)
+        insert_patient_response(json_data)
 
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Classify, '/classify')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
-api.add_resource(SubmitCenter, '/train')
+api.add_resource(Submit_Center, '/train')
 api.add_resource(Classify_Scores, '/scores')
+api.add_resource(Get_Response_Questions_By_ID, '/feedbackQuestions')
+api.add_resource(Send_Patient_Response, '/sendFeedback')
 
 
 if __name__ == '__main__': 

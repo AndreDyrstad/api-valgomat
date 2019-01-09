@@ -171,6 +171,28 @@ def insert_patient_answers(answers):
 
     return new_entity.name
 
+def insert_patient_response(json_data):
+    """
+    This method is used to insert a response from a patient.
+    :param json_data: response data {score1: 5 ,..., center: CenterA, patient: PatientA}
+    :return: Status message
+    """
+    session = init()
+    #Find center and patient with input name
+    center = session.query(Center).join(Entity).filter(Entity.name == json_data['center']).first()
+    patient = session.query(Patient).join(Entity).filter(Entity.name == json_data['patient']).first()
+
+    print(center, patient)
+
+    #Add all responses to the database
+    for element in json_data:
+        question = session.query(Question).filter(Question.value == element).first()
+        if not isinstance(json_data[element], str):
+            new_response = Response(patient=patient, center=center, question=question, score=json_data[element])
+            session.add(new_response)
+            session.commit()
+
+    return 'success'
 
 def insert_new_center(json_data):
     """
@@ -258,14 +280,19 @@ def get_all_questions():
     session = init()
 
     questions = session.query(Question).all()
-    elements = []
-    for q in questions:
-        elements.append(question_to_dict(q))
-    response = {'questions': elements}
 
-    session.close()
+    return questions_to_json(questions)
 
-    return response
+def get_all_centers():
+    """
+    Get all centers from the database
+    :return: list of centers
+    """
+    session = init()
+
+    q = session.query(Entity).filter(Entity.type == "center").all()
+
+    return q
 
 def get_patient_scores_by_name( name):
     """
@@ -311,7 +338,28 @@ def get_all_center_scores():
 
     return q
 
+def get_all_questions_for_response_site_given_name(patient_name):
+    """
+    Find all the questions where a specific patient gave a score of 5 or higher
+    :param patient_name: name of the patient
+    :return: a list of all questions with the score 5 or higher
+    """
+    session = init()
+
+    q = session.query(Question).join(Score).join(Entity).filter(Entity.name == patient_name).filter(Score.score > 5.0).all()
+
+    questions = questions_to_json(q)
+    centers = centers_to_json(get_all_centers())
+
+    questions["centers"] = centers
+
+    return questions
+
 def get_all_entities():
+    """
+    Get a list of all entities
+    :return: list of entities
+    """
 
     session = init()
 
@@ -323,10 +371,39 @@ def get_all_entities():
 
 
 def question_to_dict(q):
+    """
+    Converts a question object to a dict
+    :param q: current question
+    :return: dict with question information
+    """
 
     return {'id':q.id, 'label': q.label, 'value': q.value, 'info': q.info}
 
+def questions_to_json(questions):
+    """
+    Converts a list of questions to json
+    :param questions: questions to convert
+    :return: json of dicts with questions
+    """
+    elements = []
+    for q in questions:
+        elements.append(question_to_dict(q))
+    response = {'questions': elements}
 
+    return response
+
+def centers_to_json(centers):
+    """
+    Converts a list of centers to json
+    :param centers: centers to convert
+    :return: json of dicts with centers
+    """
+    elements = []
+    for center in centers:
+        elements.append({'id': center.id,'name' : center.name})
+    return elements
+
+#print(get_all_questions_for_response_site_given_name("to6ZVEjCEs"))
 #session = init()
 #insert_questions_from_json()
 #fill_table()
