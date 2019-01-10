@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center, use_scores
-from sql_queries import get_all_questions, insert_patient_answers, insert_new_center, get_all_questions_for_response_site_given_name, insert_patient_response
+from sql_queries import *
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -93,6 +93,11 @@ class Send_Patient_Response(Resource):
         print(json_data)
         insert_patient_response(json_data)
 
+class New_Question(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        insert_question_from_api(json_data)
+
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Classify, '/classify')
@@ -102,6 +107,7 @@ api.add_resource(Submit_Center, '/train')
 api.add_resource(Classify_Scores, '/scores')
 api.add_resource(Get_Response_Questions_By_ID, '/feedbackQuestions')
 api.add_resource(Send_Patient_Response, '/sendFeedback')
+api.add_resource(New_Question, '/newQuestion')
 
 
 if __name__ == '__main__': 

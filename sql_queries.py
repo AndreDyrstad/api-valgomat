@@ -134,6 +134,20 @@ def insert_question(label, value, info):
     session.commit()
     session.close()
 
+def insert_question_from_api(json_data):
+    """
+    Used to insert a new question to the database.
+    :param json_data: the question we want to add
+    :return: None
+    """
+    session = init()
+
+
+    new_question = Question(label=json_data['label'], value=json_data['value'], info=json_data['info'])
+    session.add(new_question)
+    session.commit()
+    session.close()
+
 
 def insert_patient_answers(answers):
     """
@@ -192,6 +206,7 @@ def insert_patient_response(json_data):
             session.add(new_response)
             session.commit()
 
+    session.close()
     return 'success'
 
 def insert_new_center(json_data):
@@ -281,6 +296,8 @@ def get_all_questions():
 
     questions = session.query(Question).all()
 
+    session.close()
+
     return questions_to_json(questions)
 
 def get_all_centers():
@@ -291,6 +308,7 @@ def get_all_centers():
     session = init()
 
     q = session.query(Entity).filter(Entity.type == "center").all()
+    session.close()
 
     return q
 
@@ -352,6 +370,8 @@ def get_all_questions_for_response_site_given_name(patient_name):
     centers = centers_to_json(get_all_centers())
 
     questions["centers"] = centers
+
+    session.close()
 
     return questions
 
