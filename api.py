@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import json
 from jaccard import predict_center, use_scores
-from sql_queries import *
+import sql_queries as sql
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -25,7 +25,7 @@ class HelloWorld(Resource):
         response = Response(json_string,content_type="application/json; charset=utf-8" )
         print(response)
 
-        file = get_all_questions()
+        file = sql.get_all_questions()
 
         print(file)
 
@@ -58,14 +58,14 @@ class Classify(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         a = predict_center(json_data)
-        print(insert_patient_answers(json_data))
+        print(sql.insert_patient_answers(json_data))
         print(a)
         return a
 
 class Submit_Center(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        insert_new_center(json_data)
+        sql.insert_new_center(json_data)
         #post_id = collection.insert_one(json_data).inserted_id
         #print(post_id)
         return {"message": "Ditt svar er nå registrert"}
@@ -73,7 +73,7 @@ class Submit_Center(Resource):
 class Classify_Scores(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        random_patient_id = insert_patient_answers(json_data)
+        random_patient_id = sql.insert_patient_answers(json_data)
         recommended_centers = use_scores(json_data)
         return recommended_centers
 
@@ -81,22 +81,22 @@ class Get_Response_Questions_By_ID(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         print(json_data['patient_id'])
-        data = get_all_questions_for_response_site_given_name(json_data['patient_id'])
+        data = sql.get_all_questions_for_response_site_given_name(json_data['patient_id'])
         print(data)
         json_string = json.dumps(data,ensure_ascii = False)
-        response = Response(json_string,content_type="application/json; charset=utf-8" )
+        response = Response(json_string, content_type="application/json; charset=utf-8")
         return response
 
 class Send_Patient_Response(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         print(json_data)
-        insert_patient_response(json_data)
+        sql.insert_patient_response(json_data)
 
 class New_Question(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        insert_question_from_api(json_data)
+        sql.insert_question_from_api(json_data)
 
 
 api.add_resource(HelloWorld, '/')
