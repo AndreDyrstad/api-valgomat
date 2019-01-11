@@ -37,12 +37,10 @@ class HelloWorld(Resource):
 
 class Patients(Resource):
     def get(self):
-        with open('storage/patients.json',encoding='utf-8') as f:
-            data = json.load(f)
-        print(type(data))
+
+        data = sql.get_questions_by_id("patient")
         json_string = json.dumps(data,ensure_ascii = False)
         response = Response(json_string,content_type="application/json; charset=utf-8" )
-        print(response)
         return data
 
 class Centers(Resource):
@@ -92,6 +90,8 @@ class Send_Patient_Response(Resource):
         json_data = request.get_json(force=True)
         print(json_data)
         sql.insert_patient_response(json_data)
+        return {"message": "ok"}
+
 
 class New_Question(Resource):
     def post(self):

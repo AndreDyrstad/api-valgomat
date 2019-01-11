@@ -278,6 +278,10 @@ def set_new_question_score_for_center( name, question, score):
 
 
 def get_all_connections():
+    """
+    Get a list of all the questions that connect to each other
+    :return: db object of connections
+    """
     session = init()
 
     q = session.query(Connection).all()
@@ -312,7 +316,45 @@ def get_all_centers():
 
     return q
 
-def get_patient_scores_by_name( name):
+def get_questions_by_id(type):
+    session = init()
+
+    if type == 'patient':
+        file_path = 'storage/patient_config.json'
+    else:
+        file_path = 'storage/center_config.json'
+
+    with open(file_path, encoding='utf-8') as f:
+        data = json.load(f)
+
+    print(data)
+
+    question_dict = {}
+
+    for key in data.keys():
+        q = session.query(Question).filter(Question.id.in_(data[key])).all()
+
+        elements = []
+
+        for a in q:
+            elements.append(question_to_dict(a))
+
+        question_dict[key] = elements
+
+    question_dict = {"questions": question_dict}
+
+    question_dict["introduction"] = {"header": "Valgomat for pasienter",
+        "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se linken under. Noe økonomigreier jeg ikke husker.",
+        "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"}
+
+    print(question_dict)
+
+    session.close()
+
+    return question_dict
+
+
+def get_patient_scores_by_name(name):
     """
     Gives a list of all the questions answered by a patient as well as scores for each question
     :param session: current session
