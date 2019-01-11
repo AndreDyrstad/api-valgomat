@@ -196,7 +196,6 @@ def insert_patient_response(json_data):
     center = session.query(Center).join(Entity).filter(Entity.name == json_data['center']).first()
     patient = session.query(Patient).join(Entity).filter(Entity.name == json_data['patient']).first()
 
-    print(center, patient)
 
     #Add all responses to the database
     for element in json_data:
@@ -327,7 +326,6 @@ def get_questions_by_id(type):
     with open(file_path, encoding='utf-8') as f:
         data = json.load(f)
 
-    print(data)
 
     question_dict = {}
 
@@ -347,7 +345,6 @@ def get_questions_by_id(type):
         "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se linken under. Noe økonomigreier jeg ikke husker.",
         "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"}
 
-    print(question_dict)
 
     session.close()
 

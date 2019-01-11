@@ -129,9 +129,6 @@ def use_scores(patient):
     center_scores = get_all_center_scores()
     connections = get_all_connections()
 
-    print(connections[0])
-
-
     all_center_scores = []
 
     #Calculate score for each center
@@ -154,7 +151,7 @@ def use_scores(patient):
         #Iterate answers and add scores -5 to 5 to the current score
         for question_name, answer_score in patient_information:
             i += 1
-            if question_name == center_score.Question.value:
+            if int(question_name) == center_score.Question.id:
                 score_for_current_center += answer_score - 5
 
                 #Check if the question is connected to any other question
@@ -164,7 +161,7 @@ def use_scores(patient):
                         print("found connection!!!!!!!!!!!!!!!!!!!!!!!!!")
 
                 if answer_score > 5:
-                    good_match_question.append(question_name)
+                    good_match_question.append(center_score.Question.label)
 
     all_center_scores.append((current_center.Entity.name, score_for_current_center, good_match_question))
 

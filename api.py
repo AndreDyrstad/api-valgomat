@@ -73,14 +73,13 @@ class Classify_Scores(Resource):
         json_data = request.get_json(force=True)
         random_patient_id = sql.insert_patient_answers(json_data)
         recommended_centers = use_scores(json_data)
+        recommended_centers["patient_id"] = random_patient_id
         return recommended_centers
 
 class Get_Response_Questions_By_ID(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        print(json_data['patient_id'])
         data = sql.get_all_questions_for_response_site_given_name(json_data['patient_id'])
-        print(data)
         json_string = json.dumps(data,ensure_ascii = False)
         response = Response(json_string, content_type="application/json; charset=utf-8")
         return response
@@ -88,7 +87,6 @@ class Get_Response_Questions_By_ID(Resource):
 class Send_Patient_Response(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        print(json_data)
         sql.insert_patient_response(json_data)
         return {"message": "ok"}
 
