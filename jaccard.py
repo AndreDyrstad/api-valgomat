@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import itertools
-from sql_queries import get_all_center_scores, get_all_connections
+from database.sql_queries import get_all_center_scores, get_all_connections
 
 def jaccard_similarity(x, y):
     """

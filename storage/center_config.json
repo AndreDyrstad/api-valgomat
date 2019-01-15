@@ -1,4 +1,245 @@
 {
-	"category1": [4, 3, 2, 1],
-	"category2": [1, 2, 3, 4]
+  "introduction":{
+    "header": "Spørreundersøkelse for behandlingssenter",
+    "description": "Beskrivelse av undersøkelsen"
+  },
+  "questions": {
+    "Informasjon om dere": [
+      {
+        "id": "Navn på institusjon/rehabiliteringsavdeling",
+        "displayAs": "text"
+      },
+      {
+        "id": "Nettadresse",
+        "displayAs": "text"
+      },
+      {
+        "id": "Telefonnummer",
+        "displayAs": "text"
+      },
+      {
+        "id": "Kontaktinformasjon til den som fyller ut skjemaet (email)",
+        "displayAs": "text"
+      }
+    ],
+    "For private institusjoner: Hvilke(n) helseregion(er) er det gjort avtale med?": [
+      {
+        "id": "Helse Nord",
+        "displayAs": "checkbox"
+
+      },
+      {
+        "id": "Helse Midt-Norge",
+        "displayAs": "checkbox"
+      },
+      {
+        "id": "Helse Vest",
+        "displayAs": "checkbox"
+      },
+      {
+        "id": "Helse Sør-Øst",
+        "displayAs": "checkbox"
+      }
+    ],
+    "Generelt om tilbud og innhold": [
+      {
+        "id": 5,
+        "displayAs": "radio"
+      },
+      {
+        "id": 6,
+        "displayAs": "radio"
+      },
+      {
+        "id": "Må pasienten være selvhjulpen i daglige aktiviteter?",
+        "displayAs": "radio"
+      },
+      {
+        "id": "Tilrettelagt for bevegelseshemmede inne?",
+        "displayAs": "radio"
+      },
+      {
+        "id": "Tilrettelagt for bevegelseshemmede ute?",
+        "displayAs": "radio"
+      },
+      {
+        "id": "Har dere noen øvre aldersgrense?",
+        "displayAs": "radio"
+      },
+      {
+        "id": "Hvis ja, hva er øvre aldersgrense",
+        "displayAs": "text"
+      },
+      {
+        "id": "Har dere noen nedre aldersgrense?",
+        "displayAs": "radio"
+      },
+      {
+        "id": "Hvis ja, hva er nedre aldersgrense",
+        "displayAs": "text"
+      }
+    ],
+    "Type opphold": [
+      {
+        "id": "Tilbud til personer med MS",
+        "displayAs": "radio"
+      },
+      {
+        "id": 24,
+        "displayAs": "radio"
+      },
+      {
+        "id": 25,
+        "displayAs": "radio"
+      },
+      {
+        "id": 27,
+        "displayAs": "radio"
+      },
+      {
+        "id": 28,
+        "displayAs": "radio"
+      },
+      {
+        "id": 29,
+        "displayAs": "radio"
+      },
+      {
+        "id": 30,
+        "displayAs": "radio"
+      },
+      {
+        "id": 2,
+        "displayAs": "radio"
+      },
+      {
+        "id": 3,
+        "displayAs": "radio"
+      },
+      {
+        "id": 4,
+        "displayAs": "radio"
+
+      }
+    ],
+    "Faggrupper/profesjoner som er tilknyttet MS-rehabiliteringen": [
+      {
+        "id": 12,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 13,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 14,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 15,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 16,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 17,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 18,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 19,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 20,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 21,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 22,
+        "displayAs": "checkbox"
+      },
+      {
+        "id": 23,
+        "displayAs": "checkbox"
+      }
+    ],
+    "Tilbud omfatter rehabilitering for": [
+      {
+		"id": 31,
+		"displayAs": "checkbox"
+	}, {
+		"id": 32,
+		"displayAs": "checkbox"
+	}, {
+		"id": 33,
+		"displayAs": "checkbox"
+	}, {
+		"id": 34,
+		"displayAs": "checkbox"
+	}, {
+		"id": 35,
+		"displayAs": "checkbox"
+	}, {
+		"id": 36,
+		"displayAs": "checkbox"
+	}, {
+		"id": 37,
+		"displayAs": "checkbox"
+	}, {
+		"id": 38,
+		"displayAs": "checkbox"
+	}, {
+		"id": 39,
+		"displayAs": "checkbox"
+	}, {
+		"id": 40,
+		"displayAs": "checkbox"
+	}, {
+		"id": 41,
+		"displayAs": "checkbox"
+	}, {
+		"id": 42,
+		"displayAs": "checkbox"
+	}, {
+		"id": 43,
+		"displayAs": "checkbox"
+	}, {
+		"id": 44,
+		"displayAs": "checkbox"
+	}, {
+		"id": 45,
+		"displayAs": "checkbox"
+	}, {
+		"id": 46,
+		"displayAs": "checkbox"
+	}, {
+		"id": 47,
+		"displayAs": "checkbox"
+	}, {
+		"id": 48,
+		"displayAs": "checkbox"
+	}, {
+		"id": 49,
+		"displayAs": "checkbox"
+	}, {
+		"id": 50,
+		"displayAs": "checkbox"
+	}
+    ],
+    "Annet": [
+      {
+        "id": "Annen informasjon",
+        "displayAs": "textarea"
+      }
+    ]
+  }
 }

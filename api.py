@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request, make_response, Response
-from flask_restful import reqparse, abort, Api, Resource
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, Response
+from flask_restful import reqparse, Api, Resource
+from flask_cors import CORS
 import json
-from jaccard import predict_center, use_scores
-import sql_queries as sql
+from jaccard import use_scores
+from database import sql_queries as sql
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -52,14 +52,6 @@ class Centers(Resource):
         print(response)
         return data
 
-class Classify(Resource):
-    def post(self):
-        json_data = request.get_json(force=True)
-        a = predict_center(json_data)
-        print(sql.insert_patient_answers(json_data))
-        print(a)
-        return a
-
 class Submit_Center(Resource):
     def post(self):
         json_data = request.get_json(force=True)
@@ -96,9 +88,12 @@ class New_Question(Resource):
         json_data = request.get_json(force=True)
         sql.insert_question_from_api(json_data)
 
+class All_Questions(Resource):
+    def get(self):
+        return sql.get_all_questions()
+
 
 api.add_resource(HelloWorld, '/')
-api.add_resource(Classify, '/classify')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
 api.add_resource(Submit_Center, '/train')
@@ -106,6 +101,7 @@ api.add_resource(Classify_Scores, '/scores')
 api.add_resource(Get_Response_Questions_By_ID, '/feedbackQuestions')
 api.add_resource(Send_Patient_Response, '/sendFeedback')
 api.add_resource(New_Question, '/newQuestion')
+api.add_resource(All_Questions, '/allQuestions')
 
 
 if __name__ == '__main__': 

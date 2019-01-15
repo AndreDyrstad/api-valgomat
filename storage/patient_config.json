@@ -1,5 +1,119 @@
 {
-	"Hva er viktig for deg": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-	"Behov for type opphold": [24, 25, 26, 27, 28, 29, 30],
-	"Hva er de to viktigste problemstillingen du ønsker rehabilitering for?": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+	"Hva er viktig for deg": [{
+		"id": 1,
+		"displayAs": "slider"
+	}, {
+		"id": 2,
+		"displayAs": "slider"
+	}, {
+		"id": 3,
+		"displayAs": "slider"
+	}, {
+		"id": 4,
+		"displayAs": "slider"
+	}, {
+		"id": 5,
+		"displayAs": "slider"
+	}, {
+		"id": 6,
+		"displayAs": "slider"
+	}, {
+		"id": 7,
+		"displayAs": "slider"
+	}, {
+		"id": 8,
+		"displayAs": "slider"
+	}, {
+		"id": 9,
+		"displayAs": "slider"
+	}, {
+		"id": 10,
+		"displayAs": "slider"
+	}, {
+		"id": 11,
+		"displayAs": "slider"
+	}],
+	"Behov for type opphold": [{
+		"id": 24,
+		"displayAs": "slider"
+	}, {
+		"id": 25,
+		"displayAs": "slider"
+	}, {
+		"id": 26,
+		"displayAs": "slider"
+	}, {
+		"id": 27,
+		"displayAs": "slider"
+	}, {
+		"id": 28,
+		"displayAs": "slider"
+	}, {
+		"id": 29,
+		"displayAs": "slider"
+	}, {
+		"id": 30,
+		"displayAs": "slider"
+	}],
+	"Hva er de to viktigste problemstillingen du ønsker rehabilitering for?": [{
+		"id": 31,
+		"displayAs": "slider"
+	}, {
+		"id": 32,
+		"displayAs": "slider"
+	}, {
+		"id": 33,
+		"displayAs": "slider"
+	}, {
+		"id": 34,
+		"displayAs": "slider"
+	}, {
+		"id": 35,
+		"displayAs": "slider"
+	}, {
+		"id": 36,
+		"displayAs": "slider"
+	}, {
+		"id": 37,
+		"displayAs": "slider"
+	}, {
+		"id": 38,
+		"displayAs": "slider"
+	}, {
+		"id": 39,
+		"displayAs": "slider"
+	}, {
+		"id": 40,
+		"displayAs": "slider"
+	}, {
+		"id": 41,
+		"displayAs": "slider"
+	}, {
+		"id": 42,
+		"displayAs": "slider"
+	}, {
+		"id": 43,
+		"displayAs": "slider"
+	}, {
+		"id": 44,
+		"displayAs": "slider"
+	}, {
+		"id": 45,
+		"displayAs": "slider"
+	}, {
+		"id": 46,
+		"displayAs": "slider"
+	}, {
+		"id": 47,
+		"displayAs": "slider"
+	}, {
+		"id": 48,
+		"displayAs": "slider"
+	}, {
+		"id": 49,
+		"displayAs": "slider"
+	}, {
+		"id": 50,
+		"displayAs": "slider"
+	}]
 }
