@@ -308,6 +308,7 @@ def get_all_connections():
     session.close()
     return q
 
+
 def get_all_questions():
     """
     Gets all the questions from the database
@@ -323,6 +324,7 @@ def get_all_questions():
 
     return questions_to_json(questions)
 
+
 def get_all_centers():
     """
     Get all centers from the database
@@ -335,13 +337,15 @@ def get_all_centers():
 
     return q
 
+
 def get_questions_by_id(entity_type):
     session = init()
 
     if entity_type == 'patient':
-        file_path = 'storage/patient_config.json'
+        #file_path = 'config_files/patient_config.json'
+        file_path = 'config_files/test_config.json'
     else:
-        file_path = 'storage/center_config.json'
+        file_path = 'config_files/center_config.json'
 
     with open(file_path, encoding='utf-8') as f:
         data = json.load(f)

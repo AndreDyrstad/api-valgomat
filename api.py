@@ -4,6 +4,7 @@ from flask_cors import CORS
 import json
 from jaccard import use_scores
 from database import sql_queries as sql
+import edit_config as config
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -90,7 +91,21 @@ class New_Question(Resource):
 
 class All_Questions(Resource):
     def get(self):
-        return sql.get_all_questions()
+        all_questions = sql.get_all_questions()
+        questions_from_config = sql.get_questions_by_id("patient")
+
+        all_questions["config"] = questions_from_config
+
+        print(all_questions)
+
+        return all_questions
+
+class Update_Question_Config(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        config.update_config_file(json_data, "patient")
+
+
 
 
 api.add_resource(HelloWorld, '/')
@@ -102,6 +117,7 @@ api.add_resource(Get_Response_Questions_By_ID, '/feedbackQuestions')
 api.add_resource(Send_Patient_Response, '/sendFeedback')
 api.add_resource(New_Question, '/newQuestion')
 api.add_resource(All_Questions, '/allQuestions')
+api.add_resource(Update_Question_Config, '/updateQuestions')
 
 
 if __name__ == '__main__': 
