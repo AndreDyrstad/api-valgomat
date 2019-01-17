@@ -105,6 +105,11 @@ class Update_Question_Config(Resource):
         json_data = request.get_json(force=True)
         config.update_config_file(json_data, "patient")
 
+class Get_Feedback(Resource):
+    def get(self):
+        response = sql.get_all_feedback()
+        print(response)
+        return response
 
 
 
@@ -118,7 +123,7 @@ api.add_resource(Send_Patient_Response, '/sendFeedback')
 api.add_resource(New_Question, '/newQuestion')
 api.add_resource(All_Questions, '/allQuestions')
 api.add_resource(Update_Question_Config, '/updateQuestions')
-
+api.add_resource(Get_Feedback, '/getFeedback')
 
 if __name__ == '__main__': 
     #app.run(host="0.0.0.0",port="8020" ,debug=True)

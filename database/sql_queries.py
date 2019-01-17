@@ -296,6 +296,17 @@ def set_new_question_score_for_center( name, question, score):
         return "Error"
 
 
+def get_all_feedback():
+    session = init()
+
+    q = session.query(Response.score, Question.label, Entity.name).join(Question).join(Center).join(Entity).filter(Entity.id == Center.id).all()
+
+    print(q)
+
+    session.close()
+
+    return feedback_to_json(q)
+
 def get_all_connections():
     """
     Get a list of all the questions that connect to each other
@@ -486,6 +497,14 @@ def centers_to_json(centers):
     for center in centers:
         elements.append({'id': center.id,'name' : center.name})
     return elements
+
+def feedback_to_json(feedback):
+    response = {"feedback": []}
+
+    for element in feedback:
+        response["feedback"].append({"center":element[2],"question":element[1],"score":element[0]})
+
+    return response
 
 #session = init()
 #insert_questions_from_json()
