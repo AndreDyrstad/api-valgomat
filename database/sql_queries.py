@@ -230,8 +230,11 @@ def insert_new_center(json_data):
     session = init()
     questions = get_all_questions()["questions"]
 
-    new_entity = Entity(type="center", name=json_data["navn"])
-    new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
+    #new_entity = Entity(type="center", name=json_data["navn"])
+    new_entity = Entity(type="center", name="test4")
+
+    #new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
+    new_center = Center(contact_person="kontakt2", phone_number=12345678,entity=new_entity)
     new_address = Address(street_name="testname", street_number=51, post_code=1236, entity=new_entity)
 
 
@@ -243,13 +246,14 @@ def insert_new_center(json_data):
 
     keys = json_data.keys()
 
-    for key in keys:
-        for question in questions:
-            if isinstance(json_data[key], list):
-                for data in json_data[key]:
-                    if data == question["value"]:
+
+    for key in keys: #Iterate all keys
+        for question in questions: #Iterate all questions from database
+            if isinstance(json_data[key], list): # if the current element is a list
+                for data in json_data[key]: #Iterate list if there is multiple layers
+                    if data == question["id"]:
                         try:
-                            q = session.query(Question).filter(Question.value == data).first()
+                            q = session.query(Question).filter(Question.id == data).first()
                             new_score = Score(entity=new_entity, question=q, score=50.0)
                             session.add(new_score)
                             session.commit()
@@ -257,9 +261,9 @@ def insert_new_center(json_data):
                             session.rollback()
                             print("Error: Could not add center answer to database")
 
-            elif key == question["value"] and not json_data[key] == 'false':
+            elif key == ("id"+str(question["id"])) and not json_data[key] == 'false': #if leaf
                 try:
-                    q = session.query(Question).filter(Question.value == question["value"]).first()
+                    q = session.query(Question).filter(Question.id == question["id"]).first()
                     new_score = Score(entity=new_entity, question=q, score=50.0)
                     session.add(new_score)
                     session.commit()
