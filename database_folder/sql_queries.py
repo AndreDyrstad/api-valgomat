@@ -2,8 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
 import random
-
-from database.database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
+from database_folder.database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
 
 # Insert: Add new element to the database
 # Set: Change cell/row
@@ -97,7 +96,7 @@ def insert_questions_from_json():
 
     session = init()
 
-    with open('storage/all_questions.json') as f:
+    with open('../storage/all_questions.json') as f:
         data = json.load(f)
 
     keys = data["questions"].keys()
@@ -111,8 +110,6 @@ def insert_questions_from_json():
             else:
                 insert_question(row["label"], row["value"], None)
 
-    new_connection = Connection(question_id=28, connected_to_id=40)
-    session.add(new_connection)
     session.commit()
 
     session.close()
@@ -231,10 +228,10 @@ def insert_new_center(json_data):
     questions = get_all_questions()["questions"]
 
     #new_entity = Entity(type="center", name=json_data["navn"])
-    new_entity = Entity(type="center", name="test4")
+    new_entity = Entity(type="center", name="test1")
 
     #new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
-    new_center = Center(contact_person="kontakt2", phone_number=12345678,entity=new_entity)
+    new_center = Center(contact_person="kontakt1", phone_number=12345678,entity=new_entity)
     new_address = Address(street_name="testname", street_number=51, post_code=1236, entity=new_entity)
 
 
@@ -273,8 +270,24 @@ def insert_new_center(json_data):
 
     session.close()
 
+def insert_new_connection(json_data):
+    session = init()
 
-def set_new_question_score_for_center( name, question, score):
+    new_connection = Connection(question_id=json_data["connection"][0], connected_to_id=json_data["connection"][1])
+    session.add(new_connection)
+
+    try:
+        session.commit()
+        session.close()
+        return {"message":"Success"}
+    except:
+        session.rollback()
+        session.close()
+        print("Error: Could not add connection")
+        return{"message":"Error"}
+
+
+def set_new_question_score_for_center(name, question, score):
     """
     Change the score for a center according to the input value
     :param session: current session
@@ -357,14 +370,13 @@ def get_questions_by_id(entity_type):
     session = init()
 
     if entity_type == 'patient':
-        #file_path = 'config_files/patient_config.json'
-        file_path = 'config_files/test_config.json'
+        file_path = 'config_files/patient_config.json'
+        #file_path = 'config_files/test_config.json'
     else:
         file_path = 'config_files/center_config.json'
 
     with open(file_path, encoding='utf-8') as f:
         data = json.load(f)
-
 
     question_dict = {}
 
@@ -467,6 +479,21 @@ def get_all_entities():
 
     return q
 
+def get_all_connections_with_name():
+    session = init()
+
+    a = session.query(Question.label).join(Connection,Connection.question_id==Question.id).all()
+    b = session.query(Question.label).join(Connection,Connection.connected_to_id==Question.id).all()
+    print(a,b)
+
+    response = {"connection": []}
+
+    for connection1, connection2 in zip(a,b):
+        response["connection"].append({"question1": connection1[0],"question2":connection2[0]})
+
+    session.close()
+    return response
+
 
 def question_to_dict(q, display_as):
     """
@@ -509,6 +536,8 @@ def feedback_to_json(feedback):
         response["feedback"].append({"center":element[2],"question":element[1],"score":element[0]})
 
     return response
+
+
 
 #session = init()
 #insert_questions_from_json()

@@ -1,5 +1,5 @@
 import json
-from database import sql_queries
+from database_folder import sql_queries
 
 def update_config_file(data, entity_type):
 

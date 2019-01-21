@@ -1,43 +1,38 @@
 {
-  "introduction":{
-    "header": "Spørreundersøkelse for behandlingssenter",
-    "description": "Beskrivelse av undersøkelsen"
-  },
-  "questions": {
     "Informasjon om dere": [
       {
-        "id": "Navn på institusjon/rehabiliteringsavdeling",
+        "id": 67,
         "displayAs": "text"
       },
       {
-        "id": "Nettadresse",
+        "id": 68,
         "displayAs": "text"
       },
       {
-        "id": "Telefonnummer",
+        "id": 69,
         "displayAs": "text"
       },
       {
-        "id": "Kontaktinformasjon til den som fyller ut skjemaet (email)",
+        "id": 70,
         "displayAs": "text"
       }
     ],
     "For private institusjoner: Hvilke(n) helseregion(er) er det gjort avtale med?": [
       {
-        "id": "Helse Nord",
+        "id": 51,
         "displayAs": "checkbox"
 
       },
       {
-        "id": "Helse Midt-Norge",
+        "id": 52,
         "displayAs": "checkbox"
       },
       {
-        "id": "Helse Vest",
+        "id": 53,
         "displayAs": "checkbox"
       },
       {
-        "id": "Helse Sør-Øst",
+        "id": 54,
         "displayAs": "checkbox"
       }
     ],
@@ -51,37 +46,37 @@
         "displayAs": "radio"
       },
       {
-        "id": "Må pasienten være selvhjulpen i daglige aktiviteter?",
+        "id": 59,
         "displayAs": "radio"
       },
       {
-        "id": "Tilrettelagt for bevegelseshemmede inne?",
+        "id": 60,
         "displayAs": "radio"
       },
       {
-        "id": "Tilrettelagt for bevegelseshemmede ute?",
+        "id": 61,
         "displayAs": "radio"
       },
       {
-        "id": "Har dere noen øvre aldersgrense?",
+        "id": 62,
         "displayAs": "radio"
       },
       {
-        "id": "Hvis ja, hva er øvre aldersgrense",
+        "id": 63,
         "displayAs": "text"
       },
       {
-        "id": "Har dere noen nedre aldersgrense?",
+        "id": 64,
         "displayAs": "radio"
       },
       {
-        "id": "Hvis ja, hva er nedre aldersgrense",
+        "id": 65,
         "displayAs": "text"
       }
     ],
     "Type opphold": [
       {
-        "id": "Tilbud til personer med MS",
+        "id": 71,
         "displayAs": "radio"
       },
       {
@@ -237,9 +232,8 @@
     ],
     "Annet": [
       {
-        "id": "Annen informasjon",
+        "id": 66,
         "displayAs": "textarea"
       }
     ]
-  }
 }

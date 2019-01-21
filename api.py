@@ -3,7 +3,7 @@ from flask_restful import reqparse, Api, Resource
 from flask_cors import CORS
 import json
 from jaccard import use_scores
-from database import sql_queries as sql
+from database_folder import sql_queries as sql
 import edit_config as config
 
 #db = client['valgomat']
@@ -38,7 +38,6 @@ class HelloWorld(Resource):
 
 class Patients(Resource):
     def get(self):
-
         data = sql.get_questions_by_id("patient")
         json_string = json.dumps(data,ensure_ascii = False)
         response = Response(json_string,content_type="application/json; charset=utf-8" )
@@ -46,11 +45,9 @@ class Patients(Resource):
 
 class Centers(Resource):
     def get(self):
-        with open('storage/centers.json',encoding='utf-8') as f:
-            data = json.load(f)
+        data = sql.get_questions_by_id("center")
         json_string = json.dumps(data,ensure_ascii = False)
         response = Response(json_string,content_type="application/json; charset=utf-8" )
-        print(response)
         return data
 
 class Submit_Center(Resource):
@@ -111,7 +108,14 @@ class Get_Feedback(Resource):
         print(response)
         return response
 
+class Add_Connection(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        return sql.insert_new_connection(json_data)
 
+class Get_Connections(Resource):
+    def get(self):
+        return sql.get_all_connections_with_name()
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Patients, '/patients')
@@ -124,9 +128,11 @@ api.add_resource(New_Question, '/newQuestion')
 api.add_resource(All_Questions, '/allQuestions')
 api.add_resource(Update_Question_Config, '/updateQuestions')
 api.add_resource(Get_Feedback, '/getFeedback')
+api.add_resource(Add_Connection, '/makeConnection')
+api.add_resource(Get_Connections, '/connections')
 
 if __name__ == '__main__': 
     #app.run(host="0.0.0.0",port="8020" ,debug=True)
-    app.run(debug=True)
+    app.run(debug=True, ssl_context='adhoc')
 
 
