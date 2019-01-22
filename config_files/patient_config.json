@@ -1,4 +1,10 @@
 {
+  "Litt om deg": [
+    {
+      "id": 72,
+      "displayAs": "text"
+    }
+  ],
   "Hva er viktig for deg?": [
     {
       "id": 1,

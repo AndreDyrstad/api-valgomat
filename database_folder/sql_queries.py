@@ -143,6 +143,8 @@ def insert_question_from_api(json_data):
     """
     session = init()
 
+    print(json_data)
+
     try:
         new_question = Question(label=json_data['label'], value=json_data['value'], info=json_data['info'])
         session.add(new_question)
@@ -179,13 +181,14 @@ def insert_patient_answers(answers):
 
     for answer in answers:
         q = session.query(Question).filter(Question.id == answer).first()
-        try:
-            new_score = Score(entity=new_entity, question=q, score=answers[answer])
-            session.add(new_score)
-            session.commit()
-        except:
-            session.rollback()
-            print("Error: Could not save patient scores to database")
+        if q is not None:
+            try:
+                new_score = Score(entity=new_entity, question=q, score=answers[answer])
+                session.add(new_score)
+                session.commit()
+            except:
+                session.rollback()
+                print("Error: Could not save patient scores to database")
 
 
     return new_entity.name
@@ -227,12 +230,12 @@ def insert_new_center(json_data):
     session = init()
     questions = get_all_questions()["questions"]
 
-    #new_entity = Entity(type="center", name=json_data["navn"])
-    new_entity = Entity(type="center", name="test1")
+    new_entity = Entity(type="center", name=json_data["i"])
+    #new_entity = Entity(type="center", name="test1")
 
-    #new_center = Center(contact_person =json_data["kontaktinformasjon"] , phone_number=json_data["telefonnummer"], entity=new_entity)
-    new_center = Center(contact_person="kontakt1", phone_number=12345678,entity=new_entity)
-    new_address = Address(street_name="testname", street_number=51, post_code=1236, entity=new_entity)
+    new_center = Center(contact_person =json_data["l"] , phone_number=json_data["k"], entity=new_entity)
+    #new_center = Center(contact_person="kontakt1", phone_number=12345678,entity=new_entity)
+    new_address = Address(street_name="testname", street_number=51, post_code=json_data["postnummer"], entity=new_entity)
 
 
     session.add(new_entity)
@@ -392,10 +395,14 @@ def get_questions_by_id(entity_type):
 
     question_dict = {"questions": question_dict}
 
-    question_dict["introduction"] = {"header": "Valgomat for pasienter",
+    if entity_type == 'patient':
+        question_dict["introduction"] = {"header": "Valgomat for pasienter",
         "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se linken under. Noe økonomigreier jeg ikke husker.",
         "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"}
-
+    else:
+        question_dict["introduction"] = {"header": "Informasjon om behandlingssteder",
+        "description": "Dette skjemaet brukes til å samle informasjon om de forskjellige behandlingsstedene. Svarene vil bli brukt til å gi pasienter en anbefaling på hvor de burde ta sin behandling.",
+        "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"}
 
     session.close()
 

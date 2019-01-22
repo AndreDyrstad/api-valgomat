@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import itertools
 from database_folder.sql_queries import get_all_center_scores, get_all_connections
+import requests
+
 
 def jaccard_similarity(x, y):
     """
@@ -117,8 +119,10 @@ def use_scores(patient):
     #Remove all answers with the score of 5, since they add up to 0 at the end anyway
     #Reduces runtime
     for key, value in patient.items():
-        if value != 5:
+        if value != 5 and not isinstance(value, str):
             patient_information.append((key,value))
+        elif isinstance(key, str) and value != 5:
+            print("Postnummer:", value)
 
     patient_information = sorted(patient_information, key=lambda x: x[1], reverse=True)
 
@@ -154,14 +158,23 @@ def use_scores(patient):
             if int(question_name) == center_score.Question.id:
                 score_for_current_center += answer_score - 5
 
-                #Check if the question is connected to any other question
-                for connection in connections:
-                    if connection.question_id == center_score.Question.id:
-                        #Todo Make code to add score for questions that are connected
-                        print("found connection!!!!!!!!!!!!!!!!!!!!!!!!!")
-
                 if answer_score > 5:
                     good_match_question.append(center_score.Question.label)
+
+            for connection in connections:
+                if (connection.question_id == center_score.Question.id or connection.connected_to_id == center_score.Question.id)\
+                        and (connection.question_id == int(question_name) or connection.connected_to_id == int(question_name)):
+                    # Todo Make code to add score for questions that are connected
+                    print(connection.question_id, connection.connected_to_id, center_score.Question.id,
+                      center_score.Entity.name)
+                    score_for_current_center += answer_score - 5
+                    good_match_question.append(center_score.Question.label)
+
+
+
+        #Check if the question is connected to any other question
+
+
 
     all_center_scores.append((current_center.Entity.name, score_for_current_center, good_match_question))
 
@@ -176,3 +189,25 @@ def use_scores(patient):
         response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'informasjon'})
 
     return response
+
+def get_distance_to_centers(postcode):
+    URL = 'https://api.bring.com/shippingguide/api/postalCode.json?clientUrl=insertYourClientUrlHere&country=NO&'
+    PARAMS = {'pnr': postcode}
+    r = requests.get(url=URL, params=PARAMS)
+    data = r.json()
+
+    print(data["result"])
+
+    list_of_postcodes = ['Oslo','Drammen', 'Bergen', "Os"]
+    param_string = ""
+
+    for codes in list_of_postcodes:
+        param_string += data['result'] +'|'+ codes + '|'
+
+    URL = 'https://no.avstand.org/route.json'
+    PARAMS = {"stops":param_string}
+
+    r = requests.get(url=URL, params=PARAMS)
+    data = r.json()
+
+    print(data["distances"])

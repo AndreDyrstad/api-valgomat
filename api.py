@@ -9,7 +9,6 @@ import edit_config as config
 #db = client['valgomat']
 #collection = db['centers']
 
-
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app)
@@ -87,14 +86,13 @@ class New_Question(Resource):
         sql.insert_question_from_api(json_data)
 
 class All_Questions(Resource):
-    def get(self):
+    def post(self):
+        json_data = request.get_json(force=True)
+        print(json_data)
         all_questions = sql.get_all_questions()
-        questions_from_config = sql.get_questions_by_id("patient")
+        questions_from_config = sql.get_questions_by_id(json_data["entity"])
 
         all_questions["config"] = questions_from_config
-
-        print(all_questions)
-
         return all_questions
 
 class Update_Question_Config(Resource):
@@ -133,6 +131,6 @@ api.add_resource(Get_Connections, '/connections')
 
 if __name__ == '__main__': 
     #app.run(host="0.0.0.0",port="8020" ,debug=True)
-    app.run(debug=True, ssl_context='adhoc')
+    app.run(debug=True)#, ssl_context='adhoc')
 
 
