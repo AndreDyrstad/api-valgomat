@@ -13,10 +13,10 @@ def update_config_file(data, entity_type):
             save_to_config[key].append({"id":question["id"],"displayAs":question["displayAs"]})
 
     if entity_type == "patient":
-        with open('config_files/test_config.json', 'w') as output_file:
+        with open('config_files/patient_config.json', 'w') as output_file:
             json.dump(save_to_config, output_file)
     else:
-        with open('config_files/test_config.json', 'w') as output_file:
+        with open('config_files/center_config.json', 'w') as output_file:
             json.dump(save_to_config, output_file)
 
 

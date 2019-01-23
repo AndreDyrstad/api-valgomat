@@ -1,10 +1,12 @@
-from flask import Flask, request, Response
-from flask_restful import reqparse, Api, Resource
-from flask_cors import CORS
 import json
-from jaccard import use_scores
-from database_folder import sql_queries as sql
+
+from flask import Flask, request, Response
+from flask_cors import CORS
+from flask_restful import reqparse, Api, Resource
+
 import edit_config as config
+from database_folder import sql_queries as sql
+from jaccard import use_scores
 
 #db = client['valgomat']
 #collection = db['centers']
@@ -98,7 +100,8 @@ class All_Questions(Resource):
 class Update_Question_Config(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        config.update_config_file(json_data, "patient")
+        print(json_data)
+        config.update_config_file(json_data["response"], json_data["entity"])
 
 class Get_Feedback(Resource):
     def get(self):
