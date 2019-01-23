@@ -144,9 +144,11 @@ def use_scores(patient):
     i = 0
 
     for center_score in center_scores:
+        print(center_score.Score.score)
 
         #Add to the same score as long as the center name is the same
         if center_score.Entity.name != current_center.Entity.name:
+            score_for_current_center = int((score_for_current_center/len(patient_information))*10)
             all_center_scores.append((current_center.Entity.name,score_for_current_center,good_match_question))
             score_for_current_center = 0
             good_match_question = []
@@ -156,23 +158,19 @@ def use_scores(patient):
         for question_name, answer_score in patient_information:
             i += 1
             if int(question_name) == center_score.Question.id:
-                score_for_current_center += answer_score - 5
+                score_for_current_center += answer_score * (center_score.Score.score/100)
 
                 if answer_score > 5:
                     good_match_question.append(center_score.Question.label)
 
+            #Check if the question is connected to any other question
             for connection in connections:
                 if (connection.question_id == center_score.Question.id or connection.connected_to_id == center_score.Question.id)\
                         and (connection.question_id == int(question_name) or connection.connected_to_id == int(question_name)):
                     # Todo Make code to add score for questions that are connected
-                    print(connection.question_id, connection.connected_to_id, center_score.Question.id,
-                      center_score.Entity.name)
-                    score_for_current_center += answer_score - 5
+                    score_for_current_center += answer_score * (center_score.Score.score/100)
                     good_match_question.append(center_score.Question.label)
 
-
-
-        #Check if the question is connected to any other question
 
 
 
