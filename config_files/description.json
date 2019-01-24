@@ -1,0 +1,10 @@
+{
+  "patient":
+  {
+    "header": "Valgomat for pasienter",
+    "description":"Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ved å svare på noen få spørsmål, vil denne Valgomaten gi deg en anbefaling på hvilke institusjoner som passer for deg. Hvert spørsmål har en ‘slider’ hvor du kan dra den grå sirkelen langs linjen. Ved hjelp av dette verktøyet, kan du vekte hvert spørsmål med en tallverdi mellom 0 og 5. Verdien 0 betyr at du ikke er interessert i denne typen behandling. Verdien 5 betyr at denne typen behandling er veldig viktig for deg. Hvis du benytter deg av Fritt behandlingsvalg (FBV), får man litt høyere egenandel på reise. Egenandel ved reise er inntil kr. 149,- hver vei uten FBV, og inntil kr. 400,- per vei med FBV. Egenandel for opphold kan variere mellom de ulike institusjonene så det anbefales å kontakte institusjonen direkte for mer informasjon. For ventetider, se linken under.",
+    "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"
+  },
+
+  "center":"Bla"
+}

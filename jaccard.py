@@ -116,12 +116,12 @@ def use_scores(patient):
     patient_information = []
 
     #Make tuple
-    #Remove all answers with the score of 5, since they add up to 0 at the end anyway
+    #Remove all answers with the score of 0, since they add up to 0 at the end anyway
     #Reduces runtime
     for key, value in patient.items():
-        if value != 5 and not isinstance(value, str):
+        if value != 0 and not isinstance(value, str):
             patient_information.append((key,value))
-        elif isinstance(key, str) and value != 5:
+        elif isinstance(key, str) and value != 0:
             print("Postnummer:", value)
 
     patient_information = sorted(patient_information, key=lambda x: x[1], reverse=True)
@@ -148,7 +148,7 @@ def use_scores(patient):
 
         #Add to the same score as long as the center name is the same
         if center_score.Entity.name != current_center.Entity.name:
-            score_for_current_center = int((score_for_current_center/len(patient_information))*10)
+            score_for_current_center = int((score_for_current_center/len(patient_information))*20)
             all_center_scores.append((current_center.Entity.name,score_for_current_center,good_match_question))
             score_for_current_center = 0
             good_match_question = []
@@ -158,17 +158,16 @@ def use_scores(patient):
         for question_name, answer_score in patient_information:
             i += 1
             if int(question_name) == center_score.Question.id:
-                score_for_current_center += answer_score * (center_score.Score.score/100)
+                score_for_current_center += answer_score #* (center_score.Score.score/100)
 
-                if answer_score > 5:
+                if answer_score > 0:
                     good_match_question.append(center_score.Question.label)
 
             #Check if the question is connected to any other question
             for connection in connections:
                 if (connection.question_id == center_score.Question.id or connection.connected_to_id == center_score.Question.id)\
                         and (connection.question_id == int(question_name) or connection.connected_to_id == int(question_name)):
-                    # Todo Make code to add score for questions that are connected
-                    score_for_current_center += answer_score * (center_score.Score.score/100)
+                    score_for_current_center += answer_score #* (center_score.Score.score/100)
                     good_match_question.append(center_score.Question.label)
 
 
@@ -184,7 +183,7 @@ def use_scores(patient):
 
     #Generate return string
     for score in all_center_scores[0:3]:
-        response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'informasjon'})
+        response['centers'].append({'name':score[0],'probability':score[1],'match':score[2],'link':'#','about':'Her skal det stå informasjon om senteret'})
 
     return response
 

@@ -395,10 +395,11 @@ def get_questions_by_id(entity_type):
 
     question_dict = {"questions": question_dict}
 
+    with open('config_files/description.json', encoding='utf-8') as f:
+        intro = json.load(f)
+
     if entity_type == 'patient':
-        question_dict["introduction"] = {"header": "Valgomat for pasienter",
-        "description": "Denne nettsiden skal hjelpe deg med å finne det rette behandlingsstedet for deg. Ventetider og plassering kan påvirke resultatet ditt. For ventetider, se linken under. Noe økonomigreier jeg ikke husker.",
-        "link": "https://helsenorge.no/velg-behandlingssted/ventetider-for-behandling?bid=347"}
+        question_dict["introduction"] = intro["patient"]
     else:
         question_dict["introduction"] = {"header": "Informasjon om behandlingssteder",
         "description": "Dette skjemaet brukes til å samle informasjon om de forskjellige behandlingsstedene. Svarene vil bli brukt til å gi pasienter en anbefaling på hvor de burde ta sin behandling.",
