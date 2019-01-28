@@ -368,6 +368,22 @@ def get_all_centers():
 
     return q
 
+def get_all_questions_answered_by_center():
+    """
+    Get all centers and their answers
+    :return: list of questions and centers
+    """
+    session = init()
+
+    q = session.query(Score.score, Question.label, Entity.name).join(Question).join(Entity).filter(Entity.type == "center").all()
+
+    response = {"data":[]}
+
+    for element in q:
+        response["data"].append({"center":element[2],"question":element[1],"score":element[0]})
+
+    return response
+
 
 def get_questions_by_id(entity_type):
     session = init()

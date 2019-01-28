@@ -118,6 +118,10 @@ class Get_Connections(Resource):
     def get(self):
         return sql.get_all_connections_with_name()
 
+class Get_Center_And_Answers(Resource):
+    def get(self):
+        return sql.get_all_questions_answered_by_center()
+
 api.add_resource(HelloWorld, '/')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
@@ -131,6 +135,7 @@ api.add_resource(Update_Question_Config, '/updateQuestions')
 api.add_resource(Get_Feedback, '/getFeedback')
 api.add_resource(Add_Connection, '/makeConnection')
 api.add_resource(Get_Connections, '/connections')
+api.add_resource(Get_Center_And_Answers, '/centerData')
 
 if __name__ == '__main__': 
     #app.run(host="0.0.0.0",port="8020" ,debug=True)

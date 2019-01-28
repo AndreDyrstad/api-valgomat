@@ -171,8 +171,6 @@ def use_scores(patient):
                     good_match_question.append(center_score.Question.label)
 
 
-
-
     all_center_scores.append((current_center.Entity.name, score_for_current_center, good_match_question))
 
     all_center_scores = sorted(all_center_scores, key=lambda x: x[1], reverse=True)
