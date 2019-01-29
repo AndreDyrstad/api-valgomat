@@ -282,26 +282,6 @@
         "type": "checkbox"
       },
       {
-        "label": "Har dere noen øvre aldersgrense?",
-        "value": "øvreAldersgrense",
-        "type": "radio"
-      },
-      {
-        "label": "Hvis ja, hva er øvre aldersgrense",
-        "value": "øvreAldersgrenseTall",
-        "type": "text"
-      },
-      {
-        "label": "Har dere noen nedre aldersgrense?",
-        "value": "nedreAldersgrense",
-        "type": "radio"
-      },
-      {
-        "label": "Hvis ja, hva er nedre aldersgrense",
-        "value": "nedreAldersgrenseTall",
-        "type": "text"
-      },
-      {
         "label": "Må pasienten være selvhjulpen i daglige aktiviteter?",
         "value": "a",
         "type": "radio"
@@ -318,7 +298,7 @@
       },
       {
         "label": "Har dere noen øvre aldersgrense?",
-        "value": "d,",
+        "value": "d",
         "type": "radio"
       },
       {

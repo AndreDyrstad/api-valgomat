@@ -1,19 +1,19 @@
 {
   "Informasjon om dere": [
     {
-      "id": 67,
+      "id": 63,
       "displayAs": "text"
     },
     {
-      "id": 68,
+      "id": 64,
       "displayAs": "text"
     },
     {
-      "id": 69,
+      "id": 65,
       "displayAs": "text"
     },
     {
-      "id": 70,
+      "id": 66,
       "displayAs": "text"
     },
     {
@@ -49,8 +49,24 @@
       "displayAs": "radio"
     },
     {
-      "id": 59,
+      "id": 55,
       "displayAs": "radio"
+    },
+    {
+      "id": 56,
+      "displayAs": "radio"
+    },
+    {
+      "id": 57,
+      "displayAs": "radio"
+    },
+    {
+      "id": 58,
+      "displayAs": "radio"
+    },
+    {
+      "id": 59,
+      "displayAs": "text"
     },
     {
       "id": 60,
@@ -58,28 +74,12 @@
     },
     {
       "id": 61,
-      "displayAs": "radio"
-    },
-    {
-      "id": 62,
-      "displayAs": "radio"
-    },
-    {
-      "id": 63,
-      "displayAs": "text"
-    },
-    {
-      "id": 64,
-      "displayAs": "radio"
-    },
-    {
-      "id": 65,
       "displayAs": "text"
     }
   ],
   "Type opphold": [
     {
-      "id": 71,
+      "id": 67,
       "displayAs": "radio"
     },
     {
@@ -253,7 +253,7 @@
   ],
   "Annet": [
     {
-      "id": 66,
+      "id": 62,
       "displayAs": "textarea"
     }
   ]
