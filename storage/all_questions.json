@@ -5,7 +5,7 @@
         "label": "Nærhet til hjemmet",
         "value": "nærhet",
         "type": "checkbox",
-        "extra": "Du vil bli plassert nær der du bor"
+        "extra": "Du ønsker rehabilitering nær der du bor"
       },
       {
         "label": "Døgnopphold",
@@ -15,13 +15,14 @@
       {
         "label": "Dagopphold",
         "value": "dagopphold",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Du sover hjemme hver natt"
       },
       {
         "label": "Poliklinikk",
         "value": "poliklinikk",
         "type": "checkbox",
-        "extra": "Poliklinikk, institusjon som behandler pasienter uten innleggelse på sengepost"
+        "extra": "Kun kortvarig vurdering eller behandling på dagtid"
       },
       {
         "label": "Individuell rehabilitering",
@@ -31,7 +32,8 @@
       {
         "label": "Rehabilitering i gruppe",
         "value": "reabilitering_grupper",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Deler av rehabiliteringen skjer gruppe med flere pasienter"
       },
       {
         "label": "Tilbud om basseng",
@@ -39,7 +41,7 @@
         "type": "checkbox"
       },
       {
-        "label": "At rehabiliteringsstedet er tilrettelagt for bevegelseshemmede ute?",
+        "label": "At rehabiliteringsstedet er tilrettelagt for bevegelseshemmede utendørs?",
         "value": "tilrettelagt_bevegelseshemmede_ute",
         "type": "checkbox"
       },
@@ -125,12 +127,14 @@
       {
         "label": "Informasjonsopphold",
         "value": "informasjon",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "For eksempel kurs med forkus på egen diagnose og hvordan leve best mulig med sykdommen"
       },
       {
         "label": "Vurderingsopphold",
         "value": "vurdering",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Avklare hvilke rehabiliteringsbehov du har"
       },
       {
         "label": "Rehabilitering",
@@ -148,12 +152,12 @@
         "type": "checkbox"
       },
       {
-        "label": "Tilbud til voksne pårørende i tilknytning til rehabiliteringsoppholdet",
+        "label": "Tilbud til dine pårørende i tilknytning til rehabiliteringsoppholdet ditt",
         "value": "voksnePårørende",
         "type": "checkbox"
       },
       {
-        "label": "Tilbud til barn pårørende i tilknytning til rehabiliteringsoppholdet",
+        "label": "Tilbud til dine barn i tilknytning til rehabiliteringsoppholdet ditt",
         "value": "barnPårørende",
         "type": "checkbox"
       }
@@ -172,7 +176,8 @@
       {
         "label": "Spastisitet",
         "value": "spastisitet",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Unormal spenning og eventuelt sammentrekninger i muskulaturen"
       },
       {
         "label": "Smerte",
@@ -182,17 +187,20 @@
       {
         "label": "Fatigue",
         "value": "fatigue",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Unormal utmattelse eller energimangel"
       },
       {
         "label": "Blærefunksjon",
         "value": "blære",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra":"Unormal hast for å nå toalettet, hyppig vannlating, hyppige urinveisinfeksjoner, problemer med å starte vannlatingen og å få tømt blæren godt, lekkasje,"
       },
       {
         "label": "Tarmfunksjon",
         "value": "tarm",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Unormal hast for å nå toalettet, hyppig avføring, obstipasjon (forstoppelse), problemer med å få tømt tarmen, lekkasje"
       },
       {
         "label": "Depresjon/angst",
@@ -202,27 +210,32 @@
       {
         "label": "Kognitiv funksjon",
         "value": "kognitiv",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Problemer med hukommelse, konsentrasjon, oppmerksomhet og behov for lengre tid når en skal løse ulike oppgaver"
       },
       {
         "label": "Søvn",
         "value": "søvn",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Innsovningsproblemer, hyppige oppvåkninger om natten, dårlig søvnkvalitet"
       },
       {
         "label": "Tale/språk/svelg",
         "value": "tale/språk/svelg",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Utydelig tale, ordletingsvansker, svelgvansker og problemer med å sette i halsen/ svelge vrangt"
       },
       {
         "label": "Lungefunksjon",
         "value": "lunge",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Kortpustet, hyppige lungebetennelser, slim, nedsatt hostekraft"
       },
       {
         "label": "Seksualfunksjon",
         "value": "seksual",
-        "type": "checkbox"
+        "type": "checkbox",
+        "extra": "Nedsatt seksuell lyst og nedsatt kroppslig respons på lyst, nedsatt kvalitet på seksuelt samvær"
       },
       {
         "label": "Arbeidsrettet rehabilitering",
@@ -344,6 +357,11 @@
       {
         "label": "Tilbud til personer med MS",
         "value": "m",
+        "type": "radio"
+      },
+      {
+        "label": "Tar dere inn MS-pasienter gruppevis?",
+        "value": "pasienterGruppevis",
         "type": "radio"
       }
     ]
