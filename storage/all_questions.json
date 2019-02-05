@@ -33,7 +33,7 @@
         "label": "Rehabilitering i gruppe",
         "value": "reabilitering_grupper",
         "type": "checkbox",
-        "extra": "Deler av rehabiliteringen skjer gruppe med flere pasienter"
+        "extra": "Deler av rehabiliteringen skjer i gruppe med flere pasienter"
       },
       {
         "label": "Tilbud om basseng",
@@ -134,7 +134,7 @@
         "label": "Vurderingsopphold",
         "value": "vurdering",
         "type": "checkbox",
-        "extra": "Avklare hvilke rehabiliteringsbehov du har"
+        "extra": "Kartlegging av rehabiliteringsbehov"
       },
       {
         "label": "Rehabilitering",
@@ -194,7 +194,7 @@
         "label": "Blærefunksjon",
         "value": "blære",
         "type": "checkbox",
-        "extra":"Unormal hast for å nå toalettet, hyppig vannlating, hyppige urinveisinfeksjoner, problemer med å starte vannlatingen og å få tømt blæren godt, lekkasje,"
+        "extra":"Unormal hast for å nå toalettet, hyppig vannlating, hyppige urinveisinfeksjoner, problemer med å starte vannlatingen og å få tømt blæren godt, lekkasje"
       },
       {
         "label": "Tarmfunksjon",

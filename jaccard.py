@@ -148,7 +148,7 @@ def use_scores(patient):
 
         #Add to the same score as long as the center name is the same
         if center_score.Entity.name != current_center.Entity.name:
-            score_for_current_center = int((score_for_current_center/len(patient_information))*20)
+            score_for_current_center = int((score_for_current_center/len(patient_information))*10)
             all_center_scores.append((current_center.Entity.name,score_for_current_center,good_match_question))
             score_for_current_center = 0
             good_match_question = []
