@@ -40,9 +40,16 @@ class HelloWorld(Resource):
 class Patients(Resource):
     def get(self):
         data = sql.get_questions_by_id("patient")
-        json_string = json.dumps(data,ensure_ascii = False)
-        response = Response(json_string,content_type="application/json; charset=utf-8" )
+        #json_string = json.dumps(data,ensure_ascii = False)
+        #response = Response(json_string,content_type="application/json; charset=utf-8" )
         return data
+
+    def post(self):
+        json_data = request.get_json(force=True)
+        random_patient_id = sql.insert_patient_answers(json_data)
+        recommended_centers = use_scores(json_data)
+        recommended_centers["patient_id"] = random_patient_id
+        return recommended_centers
 
 class Centers(Resource):
     def get(self):
@@ -51,23 +58,12 @@ class Centers(Resource):
         response = Response(json_string,content_type="application/json; charset=utf-8" )
         return data
 
-class Submit_Center(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         sql.insert_new_center(json_data)
-        #post_id = collection.insert_one(json_data).inserted_id
-        #print(post_id)
         return {"message": "Ditt svar er nå registrert"}
 
-class Classify_Scores(Resource):
-    def post(self):
-        json_data = request.get_json(force=True)
-        random_patient_id = sql.insert_patient_answers(json_data)
-        recommended_centers = use_scores(json_data)
-        recommended_centers["patient_id"] = random_patient_id
-        return recommended_centers
-
-class Get_Response_Questions_By_ID(Resource):
+class Get_Feedback_Questions_By_ID(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         data = sql.get_all_questions_for_response_site_given_name(json_data['patient_id'])
@@ -75,7 +71,11 @@ class Get_Response_Questions_By_ID(Resource):
         response = Response(json_string, content_type="application/json; charset=utf-8")
         return response
 
-class Send_Patient_Response(Resource):
+class Patient_Feedback(Resource):
+    def get(self):
+        response = sql.get_all_feedback()
+        return response
+
     def post(self):
         json_data = request.get_json(force=True)
         sql.insert_patient_response(json_data)
@@ -103,39 +103,28 @@ class Update_Question_Config(Resource):
         print(json_data)
         config.update_config_file(json_data["response"], json_data["entity"])
 
-class Get_Feedback(Resource):
+class Connections(Resource):
     def get(self):
-        response = sql.get_all_feedback()
-        print(response)
-        return response
+        return sql.get_all_connections_with_name()
 
-class Add_Connection(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         return sql.insert_new_connection(json_data)
 
-class Get_Connections(Resource):
-    def get(self):
-        return sql.get_all_connections_with_name()
-
-class Get_Center_And_Answers(Resource):
+class Get_Centers_And_Answers(Resource):
     def get(self):
         return sql.get_all_questions_answered_by_center()
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Patients, '/patients')
 api.add_resource(Centers, '/centers')
-api.add_resource(Submit_Center, '/train')
-api.add_resource(Classify_Scores, '/scores')
-api.add_resource(Get_Response_Questions_By_ID, '/feedbackQuestions')
-api.add_resource(Send_Patient_Response, '/sendFeedback')
+api.add_resource(Get_Feedback_Questions_By_ID, '/feedbackQuestions')
+api.add_resource(Patient_Feedback, '/feedback')
 api.add_resource(New_Question, '/newQuestion')
 api.add_resource(All_Questions, '/allQuestions')
 api.add_resource(Update_Question_Config, '/updateQuestions')
-api.add_resource(Get_Feedback, '/getFeedback')
-api.add_resource(Add_Connection, '/makeConnection')
-api.add_resource(Get_Connections, '/connections')
-api.add_resource(Get_Center_And_Answers, '/centerData')
+api.add_resource(Connections, '/connections')
+api.add_resource(Get_Centers_And_Answers, '/centerData')
 
 if __name__ == '__main__': 
     #app.run(host="0.0.0.0",port="8020" ,debug=True)

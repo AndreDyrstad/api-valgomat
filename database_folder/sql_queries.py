@@ -236,6 +236,7 @@ def insert_new_center(json_data):
     new_center = Center(contact_person =json_data["l"] , phone_number=json_data["k"], entity=new_entity)
     #new_center = Center(contact_person="kontakt1", phone_number=12345678,entity=new_entity)
     new_address = Address(street_name="testname", street_number=51, post_code=json_data["postnummer"], entity=new_entity)
+    #new_address = Address(street_name="testname", street_number=51, post_code=1234, entity=new_entity)
 
 
     session.add(new_entity)
