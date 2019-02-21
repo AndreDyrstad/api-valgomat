@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
-import random
-from database_folder.database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
+from database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
+from utilities import feedback_to_json, question_to_dict, questions_to_json, centers_to_json, random_string
 
-# Insert: Add new element to the database
-# Set: Change cell/row
+# Add: Add new element to the database
+# Change: Change cell/row
 # Get: Get information from the database
 
 def init():
@@ -24,70 +24,7 @@ def init():
     # session.rollback()
     return DBSession()
 
-
-def random_string():
-    """
-    Generates a random unique 64 bits string of length 10
-    :param session: current session
-    :return: random unique string
-    """
-    valid = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_'
-
-    entities = get_all_entities()
-    string = ''.join((random.choice(valid) for i in range(10)))
-    for entity in entities:
-        if entity.name == string:
-            return random_string()
-
-    return string
-
-
-
-def fill_table():
-    """
-    Used for testing. Adds test values to the database.
-    :param session: current session
-    :return: None
-    """
-
-    session = init()
-
-    new_entity = Entity(type="center", name="Senter 1")
-    new_center = Center(contact_person = "mail@address.com", phone_number=12345678, entity=new_entity)
-    new_address = Address(street_name="testname", street_number=51, post_code=1236, entity=new_entity)
-    new_question = Question(label="Spørsmål 1", value="spørsmål1", info="Mer info")
-    new_Score = Score(score=50.0, entity=new_entity, question=new_question)
-
-    new_entity2 = Entity(type="patient", name=random_string())
-    new_patient = Patient(date_of_birth = "03.04.05", entity=new_entity2)
-    new_address2 = Address(street_name="sesame street", street_number=2, post_code=9999, entity=new_entity2)
-    new_question2 = Question(label="Spørsmål 2", value="spørsmål2", info="Enda mer info")
-    new_Score2 = Score(score=76.0, entity=new_entity2, question=new_question2)
-    new_Score3 = Score(score=10.0, entity= new_entity, question=new_question2)
-
-    new_response = Response(patient=new_patient, center=new_center, question=new_question, score=34.0)
-
-    session.add(new_entity)
-    session.add(new_center)
-    session.add(new_address)
-    session.add(new_question)
-    session.add(new_Score)
-
-    session.add(new_entity2)
-    session.add(new_patient)
-    session.add(new_address2)
-    session.add(new_question2)
-    session.add(new_Score2)
-    session.add(new_Score3)
-
-    session.add(new_response)
-
-    session.commit()
-
-    session.close()
-
-
-def insert_questions_from_json():
+def add_questions_from_json():
     """
     Read questions from a json file and add it to the database.
     :param session:
@@ -96,7 +33,7 @@ def insert_questions_from_json():
 
     session = init()
 
-    with open('../storage/all_questions.json') as f:
+    with open('storage/all_questions.json') as f:
         data = json.load(f)
 
     keys = data["questions"].keys()
@@ -106,17 +43,17 @@ def insert_questions_from_json():
         for i in range(len(items)):
             row = items[i]
             if "extra" in items[i]:
-                insert_question(row["label"],row["value"],row["extra"])
+                add_question(row["label"], row["value"], row["extra"])
             else:
-                insert_question(row["label"], row["value"], None)
+                add_question(row["label"], row["value"], None)
 
     session.commit()
 
     session.close()
 
-def insert_question(label, value, info):
+def add_question(label, value, info):
     """
-    Used to insert a new question to the database.
+    Used to add a new question to the database.
     :param label: Question label
     :param value: Question value
     :param info: More information about the question
@@ -135,9 +72,9 @@ def insert_question(label, value, info):
         session.close()
         print("Error: Could not add question")
 
-def insert_question_from_api(json_data):
+def add_question_from_api(json_data):
     """
-    Used to insert a new question to the database.
+    Used to add a new question to the database.
     :param json_data: the question we want to add
     :return: None
     """
@@ -156,7 +93,7 @@ def insert_question_from_api(json_data):
         print("Error: Could not add question from api")
 
 
-def insert_patient_answers(answers):
+def add_patient_answers(answers):
     """
     Inserts new answers from a patient.
     :param answers: patient answers
@@ -171,7 +108,9 @@ def insert_patient_answers(answers):
     for key in answers.keys():
         new_answers.append(answers[key])
 
-    new_entity = Entity(name=random_string(), type="patient")
+
+
+    new_entity = Entity(name=random_string(get_all_entities()), type="patient")
     new_patient = Patient(date_of_birth="11.11.11", entity=new_entity)
     new_address = Address(post_code="1337", entity=new_entity)
 
@@ -190,12 +129,11 @@ def insert_patient_answers(answers):
                 session.rollback()
                 print("Error: Could not save patient scores to database")
 
-
     return new_entity.name
 
-def insert_patient_response(json_data):
+def add_patient_response(json_data):
     """
-    This method is used to insert a response from a patient.
+    This method is used to add a response from a patient.
     :param json_data: response data {score1: 5 ,..., center: CenterA, patient: PatientA}
     :return: Status message
     """
@@ -220,7 +158,7 @@ def insert_patient_response(json_data):
     session.close()
     return 'success'
 
-def insert_new_center(json_data):
+def add_new_center(json_data):
     """
     Inserts a new center to the database.
     All the questions answered is also added to the database with a default score of 50.
@@ -274,7 +212,7 @@ def insert_new_center(json_data):
 
     session.close()
 
-def insert_new_connection(json_data):
+def add_new_connection(json_data):
     session = init()
 
     new_connection = Connection(question_id=json_data["connection"][0], connected_to_id=json_data["connection"][1])
@@ -291,7 +229,7 @@ def insert_new_connection(json_data):
         return{"message":"Error"}
 
 
-def set_new_question_score_for_center(name, question, score):
+def change_question_score_for_center(name, question, score):
     """
     Change the score for a center according to the input value
     :param session: current session
@@ -383,6 +321,8 @@ def get_all_questions_answered_by_center():
     for element in q:
         response["data"].append({"center":element[2],"question":element[1],"score":element[0]})
 
+
+    session.close()
     return response
 
 
@@ -519,50 +459,4 @@ def get_all_connections_with_name():
     session.close()
     return response
 
-
-def question_to_dict(q, display_as):
-    """
-    Converts a question object to a dict
-    :param display_as: which type the question should be rendered as
-    :param q: current question
-    :return: dict with question information
-    """
-
-    return {'id':q.id, 'label': q.label, 'value': q.value, 'info': q.info, 'displayAs': display_as}
-
-def questions_to_json(questions):
-    """
-    Converts a list of questions to json
-    :param questions: questions to convert
-    :return: json of dicts with questions
-    """
-    elements = []
-    for q in questions:
-        elements.append(question_to_dict(q,"None"))
-    response = {'questions': elements}
-
-    return response
-
-def centers_to_json(centers):
-    """
-    Converts a list of centers to json
-    :param centers: centers to convert
-    :return: json of dicts with centers
-    """
-    elements = []
-    for center in centers:
-        elements.append({'id': center.id,'name' : center.name})
-    return elements
-
-def feedback_to_json(feedback):
-    response = {"feedback": []}
-
-    for element in feedback:
-        response["feedback"].append({"center":element[2],"question":element[1],"score":element[0]})
-
-    return response
-
-
-
 #session = init()
-#insert_questions_from_json()
