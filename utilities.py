@@ -1,7 +1,7 @@
 import random
 import json
 
-def question_to_dict(q, display_as):
+def question_to_json(q, display_as):
     """
     Converts a question object to a dict
     :param display_as: which type the question should be rendered as
@@ -19,7 +19,7 @@ def questions_to_json(questions):
     """
     elements = []
     for q in questions:
-        elements.append(question_to_dict(q,"None"))
+        elements.append(question_to_json(q, "None"))
     response = {'questions': elements}
 
     return response
@@ -46,14 +46,14 @@ def feedback_to_json(feedback):
 
 def random_string(entities):
     """
-    Generates a random unique 64 bits string of length 10
+    Generates a random unique 64 bits string of length 20
     :param entities: All entities in the database
     :param session: current session
     :return: random unique string
     """
     valid = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_'
 
-    string = ''.join((random.choice(valid) for i in range(10)))
+    string = ''.join((random.choice(valid) for i in range(20)))
     for entity in entities:
         if entity.name == string:
             return random_string(entities)
@@ -75,3 +75,15 @@ def update_config_file(data, entity_type):
     else:
         with open('config_files/center_config.json', 'w') as output_file:
             json.dump(save_to_config, output_file)
+
+def read_config_file(entity_type):
+    if entity_type == 'patient':
+        file_path = 'config_files/patient_config.json'
+        #file_path = 'config_files/test_config.json'
+    else:
+        file_path = 'config_files/center_config.json'
+
+    with open(file_path, encoding='utf-8') as f:
+        data = json.load(f)
+
+    return data

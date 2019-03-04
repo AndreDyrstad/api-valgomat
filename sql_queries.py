@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
 from database import Address, Base, Patient, Question, Score, Entity, Center, Response, Connection
-from utilities import feedback_to_json, question_to_dict, questions_to_json, centers_to_json, random_string
+from utilities import feedback_to_json, question_to_json, questions_to_json, centers_to_json, random_string, read_config_file
 
 # Add: Add new element to the database
 # Change: Change cell/row
@@ -173,8 +173,8 @@ def add_new_center(json_data):
 
     new_center = Center(contact_person =json_data["l"] , phone_number=json_data["k"], entity=new_entity)
     #new_center = Center(contact_person="kontakt1", phone_number=12345678,entity=new_entity)
-    new_address = Address(street_name="testname", street_number=51, post_code=json_data["postnummer"], entity=new_entity)
-    #new_address = Address(street_name="testname", street_number=51, post_code=1234, entity=new_entity)
+    #new_address = Address(street_name="testname", street_number=51, post_code=json_data["postnummer"], entity=new_entity)
+    new_address = Address(street_name="testname", street_number=51, post_code=1234, entity=new_entity)
 
 
     session.add(new_entity)
@@ -329,14 +329,7 @@ def get_all_questions_answered_by_center():
 def get_questions_by_id(entity_type):
     session = init()
 
-    if entity_type == 'patient':
-        file_path = 'config_files/patient_config.json'
-        #file_path = 'config_files/test_config.json'
-    else:
-        file_path = 'config_files/center_config.json'
-
-    with open(file_path, encoding='utf-8') as f:
-        data = json.load(f)
+    data = read_config_file(entity_type)
 
     question_dict = {}
 
@@ -346,7 +339,7 @@ def get_questions_by_id(entity_type):
 
         for question in range(len(data[key])):
             q = session.query(Question).filter(Question.id == data[key][question]['id']).first()
-            elements.append(question_to_dict(q, data[key][question]['displayAs']))
+            elements.append(question_to_json(q, data[key][question]['displayAs']))
 
         question_dict[key] = elements
 

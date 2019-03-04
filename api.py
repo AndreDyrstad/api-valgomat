@@ -6,7 +6,7 @@ from flask_restful import reqparse, Api, Resource
 
 from utilities import update_config_file
 import sql_queries as sql
-from rbs import use_scores
+from rbs import recommend_center_based_on_patient_answers
 
 app = Flask(__name__)
 api = Api(app)
@@ -28,7 +28,7 @@ class Patients(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         random_patient_id = sql.add_patient_answers(json_data)
-        recommended_centers = use_scores(json_data)
+        recommended_centers = recommend_center_based_on_patient_answers(json_data)
         recommended_centers["patient_id"] = random_patient_id
         return recommended_centers
 
