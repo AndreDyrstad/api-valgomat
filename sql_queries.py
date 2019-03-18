@@ -108,8 +108,6 @@ def add_patient_answers(answers):
     for key in answers.keys():
         new_answers.append(answers[key])
 
-
-
     new_entity = Entity(name=random_string(get_all_entities()), type="patient")
     new_patient = Patient(date_of_birth="11.11.11", entity=new_entity)
     new_address = Address(post_code="1337", entity=new_entity)

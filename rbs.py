@@ -16,37 +16,46 @@ def recommend_center_based_on_patient_answers(patient):
 
     list_of_all_center_scores = []
 
-    #Calculate score for each center
-    current_center = center_scores[0]
-    score_for_current_center = 0
-    questions_that_gives_a_match = []
-
+    list_of_centers = split_each_center_to_its_own_list(center_scores)
     patient_question_and_score_tuple = remove_scores_bellow_threshold(patient)
 
-    for center_score_for_current_question in center_scores:
-        #Add to the same score as long as the center name is the same
-        score_for_current_center, current_center, new_center = check_if_we_have_a_new_center(center_score_for_current_question,current_center,score_for_current_center,len(patient_question_and_score_tuple),questions_that_gives_a_match)
-        if new_center is not None:
-            list_of_all_center_scores.append(new_center)
-            questions_that_gives_a_match = []
+    for center in list_of_centers.keys():
+        score_for_current_center = 0 #Reset variable on new center
+        questions_that_gives_a_match = [] #Reset variable on new center
 
-        #Iterate answers and add scores 0 to 10 to the current score
-        for question_id, question_score in patient_question_and_score_tuple:
-            if int(question_id) == center_score_for_current_question.Question.id:
-                score_for_current_center += question_score  # * (center_score_for_current_question.Score.score/100)
-                questions_that_gives_a_match.append(center_score_for_current_question.Question.label)
+        for center_score_for_current_question in list_of_centers[center]:
 
-
-            #Check if the question is connected to any other question
-            for connection in connections:
-                if there_is_a_connection(connection, question_id, center_score_for_current_question):
+            #Iterate answers and add scores 0 to 10 to the current score
+            for question_id, question_score in patient_question_and_score_tuple:
+                if int(question_id) == center_score_for_current_question.Question.id:
+                    score_for_current_center += question_score  # * (center_score_for_current_question.Score.score/100)
                     questions_that_gives_a_match.append(center_score_for_current_question.Question.label)
-                    score_for_current_center += question_score
 
-    center_name = "Behandlingssted " + str(current_center.Entity.id)  # Change after testing to current_center.Entity.name
-    list_of_all_center_scores.append((center_name, score_for_current_center, questions_that_gives_a_match))
+
+                #Check if the question is connected to any other question
+                for connection in connections:
+                    if there_is_a_connection(connection, question_id, center_score_for_current_question):
+                        questions_that_gives_a_match.append(center_score_for_current_question.Question.label)
+                        score_for_current_center += question_score
+
+        center_name = "Behandlingssted " + str(list_of_centers[center][0].Entity.id)  # Change after testing to current_center.Entity.name
+        list_of_all_center_scores.append((center_name, score_for_current_center, questions_that_gives_a_match))
 
     return generate_json_from_results(list_of_all_center_scores, len(patient_question_and_score_tuple))
+
+
+def split_each_center_to_its_own_list(center_scores):
+    current_center = center_scores[0].Entity.name
+    list_of_centers = {current_center:[]}
+    for score in center_scores:
+        if score.Entity.name != current_center:
+            current_center = score.Entity.name
+            list_of_centers[current_center] = []
+        list_of_centers[current_center].append(score)
+
+    print(list_of_centers)
+    return list_of_centers
+
 
 def remove_scores_bellow_threshold(patient):
     """
@@ -79,32 +88,6 @@ def there_is_a_connection(connection, question_id, center_score_for_current_ques
         if connection.question_id == int(question_id) or connection.connected_to_id == int(question_id):
             return True
         return False
-
-
-def check_if_we_have_a_new_center(center_score_for_current_question, current_center, score_for_current_center, list_length, questions_that_gives_a_match):
-    """
-    Check if we are moving on to a new center. If we are, reset all variables and add the current scores to the list
-    :param center_score_for_current_question: current question
-    :param current_center: current center
-    :param score_for_current_center: current score
-    :param list_length: number of questions answered
-    :param questions_that_gives_a_match: list of questions that gives a match
-    :return:
-    """
-
-    new_center = None
-
-    #if we have a new center
-    if center_score_for_current_question.Entity.name != current_center.Entity.name:
-        score_for_current_center = int((score_for_current_center / list_length) * 10)
-
-        # Change after testing to current_center.Entity.name
-        center_name = "Behandlingssted " + str(current_center.Entity.id)
-
-        new_center = (center_name, score_for_current_center, questions_that_gives_a_match)
-        score_for_current_center = 0
-
-    return score_for_current_center, center_score_for_current_question, new_center
 
 def generate_json_from_results(list_of_all_center_scores, questions_answered):
     """

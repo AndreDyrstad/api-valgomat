@@ -30,6 +30,7 @@ class Patients(Resource):
         random_patient_id = sql.add_patient_answers(json_data)
         recommended_centers = recommend_center_based_on_patient_answers(json_data)
         recommended_centers["patient_id"] = random_patient_id
+        print(recommended_centers)
         return recommended_centers
 
 class Centers(Resource):
