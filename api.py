@@ -68,7 +68,7 @@ class New_Question(Resource):
 class All_Questions(Resource):
     def post(self):
         json_data = request.get_json(force=True)
-        all_questions = sql.get_all_questions()
+        all_questions = sql.get_all_questions_sorted()
         questions_from_config = sql.get_questions_by_id(json_data["entity"])
 
         all_questions["config"] = questions_from_config

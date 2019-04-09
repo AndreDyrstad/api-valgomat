@@ -298,6 +298,21 @@ def get_all_questions():
 
     return questions_to_json(questions)
 
+def get_all_questions_sorted():
+
+    """
+    Gets all the questions from the database in acceding order
+    :param session: current session
+    :return: dict of questions
+    """
+
+    session = init()
+
+    questions = session.query(Question).order_by(Question.label).all()
+
+    session.close()
+
+    return questions_to_json(questions)
 
 def get_all_centers():
     """
