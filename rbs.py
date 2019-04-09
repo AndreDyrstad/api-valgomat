@@ -53,7 +53,6 @@ def split_each_center_to_its_own_list(center_scores):
             list_of_centers[current_center] = []
         list_of_centers[current_center].append(score)
 
-    print(list_of_centers)
     return list_of_centers
 
 
@@ -98,7 +97,7 @@ def generate_json_from_results(list_of_all_center_scores, questions_answered):
     """
     #Sort list by score, descending
     list_of_all_center_scores = sorted(list_of_all_center_scores, key=lambda x: x[1], reverse=True)
-
+    print(list_of_all_center_scores)
     response = {'centers': []}
 
     #Generate JSON from top three results

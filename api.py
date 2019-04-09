@@ -104,5 +104,5 @@ api.add_resource(Connections, '/connections')
 api.add_resource(Get_Centers_And_Answers, '/centerData')
 
 if __name__ == '__main__': 
-    #app.run(host="0.0.0.0",port="8020" ,debug=True)
-    app.run(debug=True)#, ssl_context='adhoc')
+    app.run(host="0.0.0.0",port="8020" ,debug=True)
+    #app.run(debug=True)#, ssl_context='adhoc')
