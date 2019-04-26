@@ -28,15 +28,14 @@ def recommend_center_based_on_patient_answers(patient):
             #Iterate answers and add scores 0 to 10 to the current score
             for question_id, question_score in patient_question_and_score_tuple:
                 if int(question_id) == center_score_for_current_question.Question.id:
-                    score_for_current_center += question_score  # * (center_score_for_current_question.Score.score/100)
+                    score_for_current_center += question_score * (center_score_for_current_question.Score.score/100)
                     questions_that_gives_a_match.append(center_score_for_current_question.Question.label)
-
 
                 #Check if the question is connected to any other question
                 for connection in connections:
                     if there_is_a_connection(connection, question_id, center_score_for_current_question):
                         questions_that_gives_a_match.append(center_score_for_current_question.Question.label)
-                        score_for_current_center += question_score
+                        score_for_current_center += question_score * (center_score_for_current_question.Score.score/100)
 
         center_name = "Behandlingssted " + str(list_of_centers[center][0].Entity.id)  # Change after testing to current_center.Entity.name
         list_of_all_center_scores.append((center_name, score_for_current_center, questions_that_gives_a_match))
