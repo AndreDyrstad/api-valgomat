@@ -135,18 +135,19 @@ def add_patient_response(json_data):
     :param json_data: response data {score1: 5 ,..., center: CenterA, patient: PatientA}
     :return: Status message
     """
+
     session = init()
     #Find center and patient with input name
     center = session.query(Center).join(Entity).filter(Entity.name == json_data['center']).first()
     patient = session.query(Patient).join(Entity).filter(Entity.name == json_data['patient']).first()
 
-
-    #Add all responses to the database
+    #Add all responses to the database. If a center does not have a score for a specific question, the request is ignored
     for element in json_data:
         question = session.query(Question).filter(Question.value == element).first()
         if not isinstance(json_data[element], str):
             try:
                 new_response = Response(patient=patient, center=center, question=question, score=json_data[element])
+                change_question_score_for_center_automatically(center.id, question.id, (json_data[element] - 5) / 10)
                 session.add(new_response)
                 session.commit()
             except:
@@ -184,7 +185,6 @@ def add_new_center(json_data):
         session.rollback()
         print("Error submitting treatment center info")
         raise ValueError("Error submitting treatment center info")
-        return
 
 
     keys = json_data.keys()
@@ -233,23 +233,19 @@ def add_new_connection(json_data):
         return{"message":"Error"}
 
 
-def change_question_score_for_center(name, question, score):
+def change_question_score_for_center_manually(center_id, question_id, score):
     """
     Change the score for a center according to the input value
-    :param session: current session
-    :param name: center name (not id)
+    :param center_id: center id
     :param score: new score
-    :param question: value of question you want to change.
+    :param question_id: id of question you want to change.
     :return: Status
     """
 
     session = init()
 
-    center_id = session.query(Entity.id).filter(Entity.name == name).first()
-    question_id = session.query(Question.id).filter(Question.value == question).first()
-
     try:
-        session.query(Score).filter(Score.entity_id == center_id[0]).filter(Score.question_id == question_id[0]).update({"score": score})
+        session.query(Score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).update({"score": score})
         session.commit()
         session.close()
         return "Success"
@@ -258,6 +254,33 @@ def change_question_score_for_center(name, question, score):
         session.close()
         return "Error"
 
+
+def change_question_score_for_center_automatically(center_id, question_id, score):
+    """
+    Change the score for a center according to the input value
+    :param center_id: center id
+    :param score: new score
+    :param question_id: id of question you want to change.
+    :return: Status
+    """
+
+    session = init()
+
+    current_score = session.query(Score.score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).first()
+    print(current_score[0])
+    new_score = current_score[0] + score
+
+    print(new_score)
+
+    try:
+        session.query(Score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).update({"score": new_score})
+        session.commit()
+        session.close()
+        return "Success"
+    except:
+        session.rollback()
+        session.close()
+        return "Error"
 
 def get_all_feedback():
     session = init()
@@ -321,10 +344,12 @@ def get_all_centers():
     """
     session = init()
 
-    q = session.query(Entity).filter(Entity.type == "center").all()
+    q = session.query(Entity).filter(Entity.type == "center").order_by(Entity.name).all()
     session.close()
 
+
     return q
+
 
 def get_all_questions_answered_by_center():
     """

@@ -1,5 +1,5 @@
 #Valgomat backend
-This appliaction is used to give patients the possibility to 
+This application is used to give patients the possibility to 
 answer a few questions, and in return, get a recommendation on which
 treatment center they should pick.
 

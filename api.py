@@ -4,7 +4,7 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 from flask_restful import reqparse, Api, Resource
 
-from utilities import update_config_file
+from utilities import update_config_file, centers_to_json
 import sql_queries as sql
 from rbs import recommend_center_based_on_patient_answers
 
@@ -52,12 +52,18 @@ class Get_Feedback_Questions_By_ID(Resource):
 
 class Patient_Feedback(Resource):
     def get(self):
-        return sql.get_all_feedback()
+        response = {"feedback":sql.get_all_feedback(), "centers":centers_to_json(sql.get_all_centers()), "questions":sql.get_all_questions_sorted()}
+        return response
 
     def post(self):
         json_data = request.get_json(force=True)
         sql.add_patient_response(json_data)
         return {"status": "success"}
+
+    def put(self):
+        json_data = request.get_json(force=True)
+        print(json_data)
+        sql.change_question_score_for_center_manually(json_data["feedback"][0], json_data["feedback"][1], json_data["feedback"][2])
 
 
 class New_Question(Resource):
@@ -104,5 +110,5 @@ api.add_resource(Connections, '/connections')
 api.add_resource(Get_Centers_And_Answers, '/centerData')
 
 if __name__ == '__main__': 
-    app.run(host="0.0.0.0",port="8020" ,debug=True)
-    #app.run(debug=True)#, ssl_context='adhoc')
+    #app.run(host="0.0.0.0",port="8020" ,debug=True)
+    app.run(debug=True)#, ssl_context='adhoc')
