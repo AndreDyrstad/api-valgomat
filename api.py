@@ -30,7 +30,6 @@ class Patients(Resource):
         random_patient_id = sql.add_patient_answers(json_data)
         recommended_centers = recommend_center_based_on_patient_answers(json_data)
         recommended_centers["patient_id"] = random_patient_id
-        print(recommended_centers)
         return recommended_centers
 
 class Centers(Resource):
@@ -62,7 +61,6 @@ class Patient_Feedback(Resource):
 
     def put(self):
         json_data = request.get_json(force=True)
-        print(json_data)
         sql.change_question_score_for_center_manually(json_data["feedback"][0], json_data["feedback"][1], json_data["feedback"][2])
 
 

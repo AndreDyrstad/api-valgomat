@@ -39,7 +39,6 @@ def recommend_center_based_on_patient_answers(patient):
 
         center_name = "Behandlingssted " + str(list_of_centers[center][0].Entity.id)  # Change after testing to current_center.Entity.name
         list_of_all_center_scores.append((center_name, score_for_current_center, questions_that_gives_a_match))
-
     return generate_json_from_results(list_of_all_center_scores, len(patient_question_and_score_tuple))
 
 
@@ -96,7 +95,6 @@ def generate_json_from_results(list_of_all_center_scores, questions_answered):
     """
     #Sort list by score, descending
     list_of_all_center_scores = sorted(list_of_all_center_scores, key=lambda x: x[1], reverse=True)
-    print(list_of_all_center_scores)
     response = {'centers': []}
 
     #Generate JSON from top three results

@@ -80,8 +80,6 @@ def add_question_from_api(json_data):
     """
     session = init()
 
-    print(json_data)
-
     try:
         new_question = Question(label=json_data['label'], value=json_data['value'], info=json_data['info'])
         session.add(new_question)
@@ -244,8 +242,15 @@ def change_question_score_for_center_manually(center_id, question_id, score):
 
     session = init()
 
+
+    current_center_id = session.query(Entity.id).filter(Entity.name == center_id).first()[0]
+    current_question_id = session.query(Question.id).filter(Question.label == question_id).first()[0]
+
+    print(current_question_id)
+    print(current_center_id)
+
     try:
-        session.query(Score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).update({"score": score})
+        session.query(Score).filter(Score.entity_id == current_center_id).filter(Score.question_id == current_question_id).update({"score": score})
         session.commit()
         session.close()
         return "Success"
@@ -267,10 +272,7 @@ def change_question_score_for_center_automatically(center_id, question_id, score
     session = init()
 
     current_score = session.query(Score.score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).first()
-    print(current_score[0])
     new_score = current_score[0] + score
-
-    print(new_score)
 
     try:
         session.query(Score).filter(Score.entity_id == center_id).filter(Score.question_id == question_id).update({"score": new_score})
@@ -286,8 +288,6 @@ def get_all_feedback():
     session = init()
 
     q = session.query(Response.score, Question.label, Entity.name).join(Question).join(Center).join(Entity).filter(Entity.id == Center.id).all()
-
-    print(q)
 
     session.close()
 
@@ -486,7 +486,6 @@ def get_all_connections_with_name():
 
     a = session.query(Question.label).join(Connection,Connection.question_id==Question.id).all()
     b = session.query(Question.label).join(Connection,Connection.connected_to_id==Question.id).all()
-    print(a,b)
 
     response = {"connection": []}
 
