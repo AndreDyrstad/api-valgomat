@@ -246,9 +246,6 @@ def change_question_score_for_center_manually(center_id, question_id, score):
     current_center_id = session.query(Entity.id).filter(Entity.name == center_id).first()[0]
     current_question_id = session.query(Question.id).filter(Question.label == question_id).first()[0]
 
-    print(current_question_id)
-    print(current_center_id)
-
     try:
         session.query(Score).filter(Score.entity_id == current_center_id).filter(Score.question_id == current_question_id).update({"score": score})
         session.commit()

@@ -38,6 +38,7 @@ def recommend_center_based_on_patient_answers(patient):
                         score_for_current_center += question_score * (center_score_for_current_question.Score.score/100)
 
         center_name = "Behandlingssted " + str(list_of_centers[center][0].Entity.id)  # Change after testing to current_center.Entity.name
+        score_for_current_center = (score_for_current_center/len(questions_that_gives_a_match))*10 # Gives sum between 0-100
         list_of_all_center_scores.append((center_name, score_for_current_center, questions_that_gives_a_match))
     return generate_json_from_results(list_of_all_center_scores, len(patient_question_and_score_tuple))
 
